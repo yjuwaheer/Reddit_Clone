@@ -25,6 +25,7 @@ import SignupModal from "./SignupModal";
 
 const Navbar = () => {
   // States
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,13 +44,16 @@ const Navbar = () => {
         duration: 3000,
         isClosable: true,
       });
+      return;
     }
 
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         setUser(userCredential.user);
         setIsLoggedIn(true);
+        setLoading(false);
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -60,6 +64,7 @@ const Navbar = () => {
           duration: 3000,
           isClosable: true,
         });
+        setLoading(false);
       });
   };
 
@@ -111,6 +116,7 @@ const Navbar = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button
+                  isLoading={loading}
                   leftIcon={<FiLogIn />}
                   size="sm"
                   colorScheme="blackAlpha"

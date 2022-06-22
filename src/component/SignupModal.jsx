@@ -20,6 +20,7 @@ import {
 
 const SignupModal = ({ isOpen, onClose }) => {
   // States
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -49,6 +50,7 @@ const SignupModal = ({ isOpen, onClose }) => {
       return;
     }
 
+    setLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -60,6 +62,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           duration: 5000,
           isClosable: true,
         });
+        setLoading(false);
         resetModal();
       })
       .catch((error) => {
@@ -71,6 +74,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           duration: 3000,
           isClosable: true,
         });
+        setLoading(false);
       });
   };
 
@@ -124,6 +128,7 @@ const SignupModal = ({ isOpen, onClose }) => {
 
         <ModalFooter>
           <Button
+            isLoading={loading}
             colorScheme="orange"
             variant="solid"
             className="mr-5"
