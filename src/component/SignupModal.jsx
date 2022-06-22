@@ -36,7 +36,7 @@ const SignupModal = ({ isOpen, onClose }) => {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
-      }, 3000);
+      }, 5000);
       return;
     }
 
@@ -55,9 +55,9 @@ const SignupModal = ({ isOpen, onClose }) => {
         const user = userCredential.user;
         toast({
           title: "Success",
-          description: "Account was created successfully.",
+          description: "Account was created successfully, please login.",
           status: "success",
-          duration: 3000,
+          duration: 5000,
           isClosable: true,
         });
         resetModal();
