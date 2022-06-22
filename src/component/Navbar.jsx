@@ -20,8 +20,10 @@ import {
 } from "@chakra-ui/react";
 // Icons
 import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { MdAddBox } from "react-icons/md";
 // Components
 import SignupModal from "./SignupModal";
+import AddPostModal from "./AddPostModal";
 
 const Navbar = () => {
   // States
@@ -32,6 +34,7 @@ const Navbar = () => {
   // Other hooks
   const { isLoggedIn, setIsLoggedIn, user, setUser } = useContext(AuthContext);
   const signupModal = useDisclosure();
+  const addPostModal = useDisclosure();
   const toast = useToast();
 
   // Handle login
@@ -132,15 +135,23 @@ const Navbar = () => {
           <Button colorScheme="orange" onClick={signupModal.onOpen}>
             Sign Up
           </Button>
-          <SignupModal isOpen={signupModal.isOpen} onOpen={signupModal.onOpen} onClose={signupModal.onClose} />
         </div>
       )}
 
       {isLoggedIn && (
         <div>
           <Button
+            colorScheme="orange"
+            variant="solid"
+            className="mr-5"
+            onClick={addPostModal.onOpen}
+          >
+            <MdAddBox />
+          </Button>
+          <Button
             leftIcon={<FiLogOut />}
             colorScheme="red"
+            variant="outline"
             onClick={() => {
               handleLogout();
             }}
@@ -149,6 +160,18 @@ const Navbar = () => {
           </Button>
         </div>
       )}
+
+      {/* Modals */}
+      <SignupModal
+        isOpen={signupModal.isOpen}
+        onOpen={signupModal.onOpen}
+        onClose={signupModal.onClose}
+      />
+      <AddPostModal
+        isOpen={addPostModal.isOpen}
+        onOpen={addPostModal.onOpen}
+        onClose={addPostModal.onClose}
+      />
     </div>
   );
 };

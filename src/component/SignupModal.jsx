@@ -21,11 +21,11 @@ import {
 const SignupModal = ({ isOpen, onClose }) => {
   // States
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [infoText, setInfoText] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
 
   // Other hooks
   const toast = useToast();
