@@ -8,16 +8,17 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 // Context
 import { AuthContextProvider } from "./context/Auth";
+import { FirestoreDBContextProvider } from "./context/FirestoreDB";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ChakraProvider>
+  <ChakraProvider>
+    <FirestoreDBContextProvider>
       <AuthContextProvider>
         <App />
       </AuthContextProvider>
-    </ChakraProvider>
-  </React.StrictMode>
+    </FirestoreDBContextProvider>
+  </ChakraProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
