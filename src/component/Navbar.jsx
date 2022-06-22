@@ -31,7 +31,7 @@ const Navbar = () => {
 
   // Other hooks
   const { isLoggedIn, setIsLoggedIn, user, setUser } = useContext(AuthContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const signupModal = useDisclosure();
   const toast = useToast();
 
   // Handle login
@@ -129,10 +129,10 @@ const Navbar = () => {
             </PopoverContent>
           </Popover>
 
-          <Button colorScheme="orange" onClick={onOpen}>
+          <Button colorScheme="orange" onClick={signupModal.onOpen}>
             Sign Up
           </Button>
-          <SignupModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+          <SignupModal isOpen={signupModal.isOpen} onOpen={signupModal.onOpen} onClose={signupModal.onClose} />
         </div>
       )}
 
