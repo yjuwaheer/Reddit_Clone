@@ -1,7 +1,7 @@
 import React, { useEffect, useState, createContext } from "react";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
-import { doc, onSnapshot, query, collection } from "firebase/firestore";
+import { onSnapshot, collection } from "firebase/firestore";
 
 export const FirestoreDBContext = createContext({});
 
@@ -10,11 +10,10 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "post"), (snapshot) => {
+    const unsub = onSnapshot(collection(db, "posts"), (snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           console.log("New post: ", change.doc.data());
-          posts.push(change.doc.data());
         }
         if (change.type === "modified") {
           console.log("Modified post: ", change.doc.data());
