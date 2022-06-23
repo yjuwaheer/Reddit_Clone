@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "../style/component/AddPostModal.css";
+// Firebase
+import { db } from "../shared/FirebaseConfig";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 // Chakra UI
 import {
   Modal,
@@ -32,7 +35,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
   const toast = useToast();
 
   // Create post
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     if (!title || !description) {
       setInfoText("Title and description are required.");
       setShowAlert(true);
@@ -41,6 +44,15 @@ const AddPostModal = ({ isOpen, onClose }) => {
       }, 5000);
       return;
     }
+
+    const docRef = await addDoc(collection(db, "posts"), {
+      title: title,
+      description: description,
+      tags: tags,
+      image: "",
+      votes: 0,
+    });
+    console.log("Document written with ID: ", docRef.id);
   };
 
   return (
