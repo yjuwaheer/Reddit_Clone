@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 // Firestore
 import { db } from "../shared/FirebaseConfig";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, orderBy } from "firebase/firestore";
 // Context
 import { FirestoreDBContext } from "../context/FirestoreDB";
 // Chakra UI
@@ -29,7 +29,9 @@ const Home = () => {
     const initialPostsFetch = async () => {
       setLoading(true);
       let tempPosts = [];
-      const querySnapshot = await getDocs(collection(db, "posts"));
+      const querySnapshot = await getDocs(
+        query(collection(db, "posts"), orderBy("postedAt", "desc"))
+      );
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());

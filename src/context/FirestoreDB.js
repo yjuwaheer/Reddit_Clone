@@ -10,20 +10,34 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "posts"), (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          console.log("New post: ", change.doc.data());
-        }
-        if (change.type === "modified") {
-          console.log("Modified post: ", change.doc.data());
-        }
-        if (change.type === "removed") {
-          console.log("Removed post: ", change.doc.data());
-        }
-      });
-    });
+    subscribe();
   }, []);
+
+  // Subscribe to events
+  const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
+    console.log(posts);
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        console.log("New post: ", change.doc.data());
+      }
+      if (change.type === "modified") {
+        let alreadyPresent = false;
+        posts.forEach((post) => {
+          if (post.id === change.doc.id) {
+            alreadyPresent = true;
+          }
+        });
+
+        if (!alreadyPresent) {
+          setPosts([{ id: change.doc.id, ...change.doc.data() }, ...posts]);
+        }
+        console.log("Modified post: ", change.doc.data());
+      }
+      if (change.type === "removed") {
+        console.log("Removed post: ", change.doc.data());
+      }
+    });
+  });
 
   return (
     <FirestoreDBContext.Provider value={{ posts, setPosts }}>
