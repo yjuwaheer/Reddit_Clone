@@ -28,11 +28,14 @@ const Home = () => {
     // Inital posts fetch
     const initialPostsFetch = async () => {
       setLoading(true);
+      let tempPosts = [];
       const querySnapshot = await getDocs(collection(db, "posts"));
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
+        tempPosts.push({ id: doc.id, ...doc.data() });
       });
+      setPosts(tempPosts);
       setLoading(false);
     };
 
@@ -63,12 +66,11 @@ const Home = () => {
             </>
           )}
 
-          {!loading && (
-            <>
-              <PostCard />
-              <PostCard />
-            </>
-          )}
+          {!loading &&
+            posts.length > 0 &&
+            posts.map((post) => <PostCard post={post} key={post.id} />)}
+
+          {!loading && posts.length === 0 && <div>Empty</div>}
         </div>
 
         <div className="mx-5">RIGHT</div>

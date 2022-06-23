@@ -49,8 +49,12 @@ const AddPostModal = ({ isOpen, onClose }) => {
       title: title,
       description: description,
       tags: tags,
-      image: "",
+      imageLink: "",
+      postedBy: "",
+      authorId: "",
       votes: 0,
+      commentsCount : 0,
+      postedAt: serverTimestamp(),
     });
     console.log("Document written with ID: ", docRef.id);
   };
