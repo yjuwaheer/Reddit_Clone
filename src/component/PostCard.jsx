@@ -8,7 +8,7 @@ import { VscCommentDiscussion } from "react-icons/vsc";
 const PostCard = ({ post }) => {
   const constructedDate = `${post.postedAt
     .toDate()
-    .toDateString()} ~ ${post.postedAt.toDate().toLocaleTimeString()}`;
+    .toDateString()} @ ${post.postedAt.toDate().toLocaleTimeString()}`;
 
   return (
     <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5">
@@ -31,8 +31,8 @@ const PostCard = ({ post }) => {
             </div>
           </div>
 
-          <div className="font-semibold text-gray-400">{constructedDate}</div>
           <div className="flex items-center">
+            <div className="font-semibold text-gray-400 mr-10">{constructedDate}</div>
             {post.commentsCount}
             <VscCommentDiscussion className="ml-2" />
           </div>
