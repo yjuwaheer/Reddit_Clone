@@ -88,7 +88,7 @@ const Home = () => {
         </div>
 
         <div className="flex flex-col drop-shadow-sm border-2 ml-5 p-4 rounded-md  w-1/5 h-96">
-          <div className="text-2xl font-bold">Popular Tags</div>
+          <div className="text-2xl font-bold">Random Tags</div>
 
           <Divider className="my-2" />
 
