@@ -88,7 +88,22 @@ const Home = () => {
           )}
         </div>
 
-        <div className="mx-5">RIGHT</div>
+        <div className="flex flex-col drop-shadow-sm border-2 ml-5 p-4 rounded-md bg-slate-50 w-1/5 h-96">
+          <div className="text-xl font-bold mb-4">Popular Tags</div>
+
+          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+            Cars
+          </div>
+          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+            Computers
+          </div>
+          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+            JS
+          </div>
+          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+            Space
+          </div>
+        </div>
       </div>
     </div>
   );
