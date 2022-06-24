@@ -1,4 +1,6 @@
 import React, { useState, useContext } from "react";
+// Routing
+import { useNavigate } from "react-router-dom";
 // Firebase
 import { auth } from "../shared/FirebaseConfig";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
@@ -38,6 +40,7 @@ const Navbar = () => {
   const signupModal = useDisclosure();
   const addPostModal = useDisclosure();
   const toast = useToast();
+  const navigate = useNavigate();
 
   // Handle login
   const handleLogin = () => {
@@ -88,7 +91,14 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center bg-gray-50 px-8 py-3">
-      <div className="text-2xl font-bold">ForumX</div>
+      <div
+        className="text-2xl font-bold hover:cursor-pointer"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        ForumX
+      </div>
 
       {!isLoggedIn && (
         <div>
@@ -155,13 +165,23 @@ const Navbar = () => {
           </Button>
 
           <Tooltip hasArrow label="Profile">
-            <Button colorScheme="blackAlpha" variant="solid" className="mr-5">
+            <Button
+              colorScheme="blackAlpha"
+              variant="solid"
+              className="mr-5"
+              onClick={() => navigate("/profile")}
+            >
               <FaUserCircle />
             </Button>
           </Tooltip>
 
           <Tooltip hasArrow label="Settings">
-            <Button colorScheme="blackAlpha" variant="solid" className="mr-5">
+            <Button
+              colorScheme="blackAlpha"
+              variant="solid"
+              className="mr-5"
+              onClick={() => navigate("/settings")}
+            >
               <MdSettings />
             </Button>
           </Tooltip>
