@@ -10,6 +10,7 @@ import {
   Text,
   Button,
   Input,
+  Textarea,
   Select,
 } from "@chakra-ui/react";
 // Country list
@@ -51,6 +52,7 @@ const Settings = () => {
                 </Text>
                 <Input
                   variant="filled"
+                  focusBorderColor="orange.500"
                   placeholder="First Name"
                   value=""
                   onChange={() => {}}
@@ -66,6 +68,7 @@ const Settings = () => {
                 </Text>
                 <Input
                   variant="filled"
+                  focusBorderColor="orange.500"
                   placeholder="Last Name"
                   value=""
                   onChange={() => {}}
@@ -77,10 +80,26 @@ const Settings = () => {
               fontSize="lg"
               className="font-medium my-3 underline underline-offset-1"
             >
+              Profile Bio
+            </Text>
+            <Textarea
+              variant="filled"
+              focusBorderColor="orange.500"
+              placeholder="Tell us a bit about you"
+              value=""
+              className="mb-3"
+              onChange={() => {}}
+            />
+
+            <Text
+              fontSize="lg"
+              className="font-medium my-3 underline underline-offset-1"
+            >
               Username
             </Text>
             <Input
               variant="filled"
+              focusBorderColor="orange.500"
               placeholder="Username"
               value=""
               className="mb-3"
@@ -95,6 +114,7 @@ const Settings = () => {
             </Text>
             <Input
               variant="filled"
+              focusBorderColor="orange.500"
               placeholder="Phone Number"
               value=""
               className="mb-3"
@@ -109,6 +129,7 @@ const Settings = () => {
             </Text>
             <Select
               variant="filled"
+              focusBorderColor="orange.500"
               placeholder="Select Country"
               value=""
               className="mb-3"
