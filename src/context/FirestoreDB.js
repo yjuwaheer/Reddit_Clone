@@ -15,7 +15,6 @@ export const FirestoreDBContextProvider = ({ children }) => {
 
   // Subscribe to events
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
-    console.log(posts);
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
         console.log("New post: ", change.doc.data());

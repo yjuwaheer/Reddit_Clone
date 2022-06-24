@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../style/component/AddPostModal.css";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+// Context
+import { AuthContext } from "../context/Auth";
 // Chakra UI
 import {
   Modal,
@@ -33,6 +35,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
 
   // Other hooks
   const toast = useToast();
+  const { user } = useContext(AuthContext);
 
   // Create post
   const handleCreatePost = async () => {
@@ -53,7 +56,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
         tags: tags,
         imageLink: "",
         postedBy: "",
-        authorId: "",
+        authorId: user.uid,
         votes: 0,
         commentsCount: 0,
         postedAt: serverTimestamp(),

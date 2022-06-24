@@ -34,7 +34,6 @@ const Home = () => {
       );
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
         tempPosts.push({ id: doc.id, ...doc.data() });
       });
       setPosts(tempPosts);
