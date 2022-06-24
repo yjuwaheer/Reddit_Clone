@@ -17,10 +17,12 @@ import {
   PopoverCloseButton,
   useDisclosure,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 // Icons
 import { FiLogIn, FiLogOut } from "react-icons/fi";
-import { MdAddBox } from "react-icons/md";
+import { MdAddBox, MdSettings } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 // Components
 import SignupModal from "./SignupModal";
 import AddPostModal from "./AddPostModal";
@@ -148,8 +150,22 @@ const Navbar = () => {
             className="mr-5"
             onClick={addPostModal.onOpen}
           >
-            <MdAddBox />
+            <MdAddBox className="mr-1" />
+            Add Post
           </Button>
+
+          <Tooltip hasArrow label="Profile">
+            <Button colorScheme="blackAlpha" variant="solid" className="mr-5">
+              <FaUserCircle />
+            </Button>
+          </Tooltip>
+
+          <Tooltip hasArrow label="Settings">
+            <Button colorScheme="blackAlpha" variant="solid" className="mr-5">
+              <MdSettings />
+            </Button>
+          </Tooltip>
+
           <Button
             leftIcon={<FiLogOut />}
             colorScheme="red"
