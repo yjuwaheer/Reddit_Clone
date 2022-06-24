@@ -12,6 +12,8 @@ import {
   Stack,
   Skeleton,
 } from "@chakra-ui/react";
+// Lottie
+import { Player, Controls } from "@lottiefiles/react-lottie-player";
 // Icons
 import { BsSearch } from "react-icons/bs";
 // Components
@@ -71,7 +73,19 @@ const Home = () => {
             posts.length > 0 &&
             posts.map((post) => <PostCard post={post} key={post.id} />)}
 
-          {!loading && posts.length === 0 && <div>Empty</div>}
+          {!loading && posts.length === 0 && (
+            <>
+              <Player
+                autoplay
+                loop
+                src="https://assets4.lottiefiles.com/packages/lf20_QJMen2.json"
+                speed={0.5}
+                style={{ height: "300px" }}
+              ></Player>
+              <div className="text-2xl font-bold">No post found :-(</div>
+              <div className="text-xl font-medium">Try adding one</div>
+            </>
+          )}
         </div>
 
         <div className="mx-5">RIGHT</div>
