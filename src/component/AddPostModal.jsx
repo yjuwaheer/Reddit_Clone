@@ -45,18 +45,40 @@ const AddPostModal = ({ isOpen, onClose }) => {
       return;
     }
 
-    const docRef = await addDoc(collection(db, "posts"), {
-      title: title,
-      description: description,
-      tags: tags,
-      imageLink: "",
-      postedBy: "",
-      authorId: "",
-      votes: 0,
-      commentsCount : 0,
-      postedAt: serverTimestamp(),
-    });
-    console.log("Document written with ID: ", docRef.id);
+    setLoading(true);
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        title: title,
+        description: description,
+        tags: tags,
+        imageLink: "",
+        postedBy: "",
+        authorId: "",
+        votes: 0,
+        commentsCount: 0,
+        postedAt: serverTimestamp(),
+      });
+      toast({
+        title: "Success",
+        description: "Post was created successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      resetModal();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  // Reset modal
+  const resetModal = () => {
+    setTitle("");
+    setDescription("");
+    setTags([]);
+    onClose();
   };
 
   return (
