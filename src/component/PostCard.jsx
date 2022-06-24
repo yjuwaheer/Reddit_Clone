@@ -11,7 +11,7 @@ const PostCard = ({ post }) => {
     .toDateString()} @ ${post.postedAt.toDate().toLocaleTimeString()}`;
 
   return (
-    <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5">
+    <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5 hover:drop-shadow-md">
       <div className="flex flex-col items-center mr-14">
         <BsArrowUpSquare className="hover:text-green-500 hover:cursor-pointer" />
         <div className="my-2 font-bold">{post.votes}</div>
@@ -32,7 +32,9 @@ const PostCard = ({ post }) => {
           </div>
 
           <div className="flex items-center">
-            <div className="font-semibold text-gray-400 mr-10">{constructedDate}</div>
+            <div className="font-semibold text-gray-400 mr-10">
+              {constructedDate}
+            </div>
             {post.commentsCount}
             <VscCommentDiscussion className="ml-2" />
           </div>

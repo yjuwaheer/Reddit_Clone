@@ -93,6 +93,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Input
             variant="filled"
+            focusBorderColor="orange.500"
             placeholder="Title"
             type="text"
             className="my-2"
@@ -101,6 +102,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
           />
           <Textarea
             variant="filled"
+            focusBorderColor="orange.500"
             placeholder="Description"
             type="text"
             className="my-2"

@@ -104,6 +104,7 @@ const Navbar = () => {
               <PopoverBody>
                 <Input
                   variant="filled"
+                  focusBorderColor="orange.500"
                   placeholder="Email"
                   type="email"
                   className="my-2"
@@ -112,6 +113,7 @@ const Navbar = () => {
                 />
                 <Input
                   variant="filled"
+                  focusBorderColor="orange.500"
                   placeholder="Password"
                   type="password"
                   className="my-2"

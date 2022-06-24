@@ -95,6 +95,7 @@ const SignupModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Input
             variant="filled"
+            focusBorderColor="orange.500"
             placeholder="Email"
             type="email"
             className="my-2"
@@ -103,6 +104,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           />
           <Input
             variant="filled"
+            focusBorderColor="orange.500"
             placeholder="Password"
             type="password"
             className="my-2"
@@ -111,6 +113,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           />
           <Input
             variant="filled"
+            focusBorderColor="orange.500"
             placeholder="Confirm Password"
             type="password"
             className="my-2"

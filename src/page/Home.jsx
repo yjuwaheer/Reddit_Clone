@@ -9,8 +9,8 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-  Stack,
   Skeleton,
+  Divider,
 } from "@chakra-ui/react";
 // Lottie
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
@@ -54,7 +54,6 @@ const Home = () => {
             placeholder="Search"
             variant="filled"
             focusBorderColor="orange.500"
-            colorScheme="orange"
           />
         </InputGroup>
       </div>
@@ -88,19 +87,21 @@ const Home = () => {
           )}
         </div>
 
-        <div className="flex flex-col drop-shadow-sm border-2 ml-5 p-4 rounded-md bg-slate-50 w-1/5 h-96">
-          <div className="text-xl font-bold mb-4">Popular Tags</div>
+        <div className="flex flex-col drop-shadow-sm border-2 ml-5 p-4 rounded-md  w-1/5 h-96">
+          <div className="text-2xl font-bold">Popular Tags</div>
 
-          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+          <Divider className="my-2" />
+
+          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
             Cars
           </div>
-          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
             Computers
           </div>
-          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
             JS
           </div>
-          <div className="text-lg font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
+          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
             Space
           </div>
         </div>
