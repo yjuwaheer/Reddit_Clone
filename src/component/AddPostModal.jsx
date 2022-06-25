@@ -5,6 +5,7 @@ import { db } from "../shared/FirebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 // Context
 import { AuthContext } from "../context/Auth";
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Modal,
@@ -36,6 +37,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
   // Other hooks
   const toast = useToast();
   const { user } = useContext(AuthContext);
+  const { accentColor } = useContext(SettingsContext);
 
   // Create post
   const handleCreatePost = async () => {
@@ -93,7 +95,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Input
             variant="filled"
-            focusBorderColor="orange.500"
+            focusBorderColor={`${accentColor}.500`}
             placeholder="Title"
             type="text"
             className="my-2"
@@ -102,7 +104,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
           />
           <Textarea
             variant="filled"
-            focusBorderColor="orange.500"
+            focusBorderColor={`${accentColor}.500`}
             placeholder="Description"
             type="text"
             className="my-2"
@@ -127,7 +129,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
         <ModalFooter>
           <Button
             isLoading={loading}
-            colorScheme="orange"
+            colorScheme={accentColor}
             variant="solid"
             className="mr-5"
             onClick={() => {

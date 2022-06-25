@@ -9,13 +9,16 @@ import { ChakraProvider } from "@chakra-ui/react";
 // Context
 import { AuthContextProvider } from "./context/Auth";
 import { FirestoreDBContextProvider } from "./context/FirestoreDB";
+import { SettingsContextProvider } from "./context/Settings";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider>
     <FirestoreDBContextProvider>
       <AuthContextProvider>
-        <App />
+        <SettingsContextProvider>
+          <App />
+        </SettingsContextProvider>
       </AuthContextProvider>
     </FirestoreDBContextProvider>
   </ChakraProvider>

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+// Context
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Tabs,
@@ -17,9 +19,20 @@ import {
 import countryList from "react-select-country-list";
 
 const Settings = () => {
+  // States
+  const [firstName, setFirstName] = useState("");
+
+  // Other hooks
+  const { accentColor, setAccentColor } = useContext(SettingsContext);
+
+  // Update accent color
+  const updateAccentColor = (color) => {
+    setAccentColor(color);
+  };
+
   return (
     <div className="flex justify-center mt-10">
-      <Tabs variant="soft-rounded" colorScheme="orange" className="w-1/2">
+      <Tabs variant="soft-rounded" colorScheme={accentColor} className="w-1/2">
         <TabList>
           <Tab>Account</Tab>
           <Tab>Appearance</Tab>
@@ -52,7 +65,7 @@ const Settings = () => {
                 </Text>
                 <Input
                   variant="filled"
-                  focusBorderColor="orange.500"
+                  focusBorderColor={`${accentColor}.500`}
                   placeholder="First Name"
                   value=""
                   onChange={() => {}}
@@ -68,7 +81,7 @@ const Settings = () => {
                 </Text>
                 <Input
                   variant="filled"
-                  focusBorderColor="orange.500"
+                  focusBorderColor={`${accentColor}.500`}
                   placeholder="Last Name"
                   value=""
                   onChange={() => {}}
@@ -84,7 +97,7 @@ const Settings = () => {
             </Text>
             <Textarea
               variant="filled"
-              focusBorderColor="orange.500"
+              focusBorderColor={`${accentColor}.500`}
               placeholder="Tell us a bit about you"
               value=""
               className="mb-3"
@@ -99,7 +112,7 @@ const Settings = () => {
             </Text>
             <Input
               variant="filled"
-              focusBorderColor="orange.500"
+              focusBorderColor={`${accentColor}.500`}
               placeholder="Username"
               value=""
               className="mb-3"
@@ -114,7 +127,7 @@ const Settings = () => {
             </Text>
             <Input
               variant="filled"
-              focusBorderColor="orange.500"
+              focusBorderColor={`${accentColor}.500`}
               placeholder="Phone Number"
               value=""
               className="mb-3"
@@ -129,7 +142,7 @@ const Settings = () => {
             </Text>
             <Select
               variant="filled"
-              focusBorderColor="orange.500"
+              focusBorderColor={`${accentColor}.500`}
               placeholder="Select Country"
               value=""
               className="mb-3"
@@ -153,11 +166,41 @@ const Settings = () => {
               Choose your accent color
             </Text>
             <div>
-              <Button colorScheme="orange" className="mr-3"></Button>
-              <Button colorScheme="red" className="mr-3"></Button>
-              <Button colorScheme="yellow" className="mr-3"></Button>
-              <Button colorScheme="green" className="mr-3"></Button>
-              <Button colorScheme="blue" className="mr-3"></Button>
+              <Button
+                colorScheme="orange"
+                className="mr-3"
+                onClick={() => {
+                  updateAccentColor("orange");
+                }}
+              ></Button>
+              <Button
+                colorScheme="red"
+                className="mr-3"
+                onClick={() => {
+                  updateAccentColor("red");
+                }}
+              ></Button>
+              <Button
+                colorScheme="yellow"
+                className="mr-3"
+                onClick={() => {
+                  updateAccentColor("yellow");
+                }}
+              ></Button>
+              <Button
+                colorScheme="green"
+                className="mr-3"
+                onClick={() => {
+                  updateAccentColor("green");
+                }}
+              ></Button>
+              <Button
+                colorScheme="blue"
+                className="mr-3"
+                onClick={() => {
+                  updateAccentColor("blue");
+                }}
+              ></Button>
             </div>
           </TabPanel>
         </TabPanels>

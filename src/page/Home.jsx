@@ -4,6 +4,7 @@ import { db } from "../shared/FirebaseConfig";
 import { getDocs, collection, query, orderBy } from "firebase/firestore";
 // Context
 import { FirestoreDBContext } from "../context/FirestoreDB";
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   InputGroup,
@@ -25,6 +26,7 @@ const Home = () => {
 
   // Other hooks
   const { posts, setPosts } = useContext(FirestoreDBContext);
+  const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
     // Inital posts fetch
@@ -53,7 +55,7 @@ const Home = () => {
           <Input
             placeholder="Search"
             variant="filled"
-            focusBorderColor="orange.500"
+            focusBorderColor={`${accentColor}.500`}
           />
         </InputGroup>
       </div>

@@ -6,6 +6,7 @@ import { auth } from "../shared/FirebaseConfig";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 // Context
 import { AuthContext } from "../context/Auth";
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Input,
@@ -37,6 +38,7 @@ const Navbar = () => {
 
   // Other hooks
   const { isLoggedIn, setIsLoggedIn, user, setUser } = useContext(AuthContext);
+  const { accentColor } = useContext(SettingsContext);
   const signupModal = useDisclosure();
   const addPostModal = useDisclosure();
   const toast = useToast();
@@ -116,7 +118,7 @@ const Navbar = () => {
               <PopoverBody>
                 <Input
                   variant="filled"
-                  focusBorderColor="orange.500"
+                  focusBorderColor={`${accentColor}.500`}
                   placeholder="Email"
                   type="email"
                   className="my-2"
@@ -125,7 +127,7 @@ const Navbar = () => {
                 />
                 <Input
                   variant="filled"
-                  focusBorderColor="orange.500"
+                  focusBorderColor={`${accentColor}.500`}
                   placeholder="Password"
                   type="password"
                   className="my-2"
@@ -146,7 +148,7 @@ const Navbar = () => {
             </PopoverContent>
           </Popover>
 
-          <Button colorScheme="orange" onClick={signupModal.onOpen}>
+          <Button colorScheme={accentColor} onClick={signupModal.onOpen}>
             Sign Up
           </Button>
         </div>
@@ -155,7 +157,7 @@ const Navbar = () => {
       {isLoggedIn && (
         <div>
           <Button
-            colorScheme="orange"
+            colorScheme={accentColor}
             variant="solid"
             className="mr-5"
             onClick={addPostModal.onOpen}

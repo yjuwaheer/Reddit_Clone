@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // Firebase
 import { auth } from "../shared/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+// Context
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Modal,
@@ -29,6 +31,7 @@ const SignupModal = ({ isOpen, onClose }) => {
 
   // Other hooks
   const toast = useToast();
+  const { accentColor } = useContext(SettingsContext);
 
   // Handle signup
   const handleSignup = () => {
@@ -95,7 +98,7 @@ const SignupModal = ({ isOpen, onClose }) => {
         <ModalBody>
           <Input
             variant="filled"
-            focusBorderColor="orange.500"
+            focusBorderColor={`${accentColor}.500`}
             placeholder="Email"
             type="email"
             className="my-2"
@@ -104,7 +107,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           />
           <Input
             variant="filled"
-            focusBorderColor="orange.500"
+            focusBorderColor={`${accentColor}.500`}
             placeholder="Password"
             type="password"
             className="my-2"
@@ -113,7 +116,7 @@ const SignupModal = ({ isOpen, onClose }) => {
           />
           <Input
             variant="filled"
-            focusBorderColor="orange.500"
+            focusBorderColor={`${accentColor}.500`}
             placeholder="Confirm Password"
             type="password"
             className="my-2"
@@ -132,7 +135,7 @@ const SignupModal = ({ isOpen, onClose }) => {
         <ModalFooter>
           <Button
             isLoading={loading}
-            colorScheme="orange"
+            colorScheme={accentColor}
             variant="solid"
             className="mr-5"
             onClick={() => {
