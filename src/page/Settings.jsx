@@ -42,7 +42,7 @@ const Settings = () => {
 
   // Other hooks
   const { user } = useContext(AuthContext);
-  const { accentColor, setAccentColor } = useContext(SettingsContext);
+  const { accentColor, setAccentColor, setFont } = useContext(SettingsContext);
   const toast = useToast();
 
   useEffect(() => {
@@ -109,6 +109,12 @@ const Settings = () => {
   const updateAccentColor = (color) => {
     setAccentColor(color);
     localStorage.setItem("accentColor", color);
+  };
+
+  // Update font style
+  const updateFont = (font) => {
+    setFont(font);
+    localStorage.setItem("fontStyle", font);
   };
 
   return (
@@ -278,11 +284,11 @@ const Settings = () => {
           <TabPanel className="w-full flex flex-col items-start">
             <Text
               fontSize="lg"
-              className="font-medium mb-3 underline underline-offset-1"
+              className="font-medium my-3 underline underline-offset-1"
             >
               Choose your accent color
             </Text>
-            <div>
+            <div className="mb-3">
               <Button
                 colorScheme="orange"
                 className="mr-3"
@@ -318,6 +324,65 @@ const Settings = () => {
                   updateAccentColor("blue");
                 }}
               ></Button>
+            </div>
+
+            <Text
+              fontSize="lg"
+              className="font-medium my-3 underline underline-offset-1"
+            >
+              Select your font style
+            </Text>
+            <div className="mb-3 text-start">
+              <Button
+                variant="outline"
+                colorScheme={accentColor}
+                className="mr-3 mb-1"
+                onClick={() => {
+                  updateFont("Poppins");
+                }}
+              >
+                Poppins
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme={accentColor}
+                className="mr-3 mb-1"
+                onClick={() => {
+                  updateFont("Raleway");
+                }}
+              >
+                Raleway
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme={accentColor}
+                className="mr-3 mb-1"
+                onClick={() => {
+                  updateFont("Overpass");
+                }}
+              >
+                Overpass
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme={accentColor}
+                className="mr-3 mb-1"
+                onClick={() => {
+                  updateFont("Oxygen");
+                }}
+              >
+                Oxygen
+              </Button>
+              <Button
+                variant="outline"
+                colorScheme="gray"
+                className="mr-3 mb-1"
+                onClick={() => {
+                  updateFont("");
+                }}
+              >
+                Default
+              </Button>
             </div>
           </TabPanel>
         </TabPanels>
