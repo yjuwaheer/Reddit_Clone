@@ -3,8 +3,6 @@ import { Global } from "@emotion/react";
 export const Fonts = () => (
   <Global
     styles={`
-      /* Copied from https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Raleway&display=swap */
-
       // POPPINS
       /* devanagari */
       @font-face {
