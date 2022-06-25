@@ -28,6 +28,7 @@ const Settings = () => {
   // Update accent color
   const updateAccentColor = (color) => {
     setAccentColor(color);
+    localStorage.setItem("accentColor", color)
   };
 
   return (
