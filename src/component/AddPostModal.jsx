@@ -52,7 +52,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      const docRef = await addDoc(collection(db, "posts"), {
+      await addDoc(collection(db, "posts"), {
         title: title,
         description: description,
         tags: tags,

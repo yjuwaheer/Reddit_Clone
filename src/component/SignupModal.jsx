@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 // Firebase
-import { auth } from "../shared/FirebaseConfig";
+import { auth, db } from "../shared/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 // Context
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
@@ -24,6 +25,7 @@ const SignupModal = ({ isOpen, onClose }) => {
   // States
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,8 +36,8 @@ const SignupModal = ({ isOpen, onClose }) => {
   const { accentColor } = useContext(SettingsContext);
 
   // Handle signup
-  const handleSignup = () => {
-    if (!email || !password || !confirmPassword) {
+  const handleSignup = async () => {
+    if (!username || !email || !password || !confirmPassword) {
       setInfoText("Please fill in all the fields.");
       setShowAlert(true);
       setTimeout(() => {
@@ -53,36 +55,52 @@ const SignupModal = ({ isOpen, onClose }) => {
       return;
     }
 
+    // Create user
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        toast({
-          title: "Success",
-          description: "Account was created successfully, please login.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        setLoading(false);
-        resetModal();
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        toast({
-          title: "Error",
-          description: errorMessage,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        setLoading(false);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Create user in firestore
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        username: username,
+        email: email,
+        firstName: "",
+        lastName: "",
+        profileBio: "",
+        phoneNumber: "",
+        country: "",
+        backdropImageLink: "",
+        profileImageLink: "",
+        createdAt: serverTimestamp(),
       });
+      toast({
+        title: "Success",
+        description: "Account was created successfully, please login.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      setLoading(false);
+      resetModal();
+    } catch (error) {
+      const errorMessage = error.message;
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      setLoading(false);
+    }
   };
 
   // Reset modal
   const resetModal = () => {
+    setUsername("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
@@ -96,6 +114,15 @@ const SignupModal = ({ isOpen, onClose }) => {
         <ModalHeader>Sign Up</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          <Input
+            variant="filled"
+            focusBorderColor={`${accentColor}.500`}
+            placeholder="Username"
+            type="text"
+            className="my-2"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
           <Input
             variant="filled"
             focusBorderColor={`${accentColor}.500`}
