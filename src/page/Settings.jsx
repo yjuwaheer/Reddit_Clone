@@ -1,5 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
+// Firebase
+import { db } from "../shared/FirebaseConfig";
+import { getDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 // Context
+import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
@@ -14,21 +18,88 @@ import {
   Input,
   Textarea,
   Select,
+  Tooltip,
+  useToast,
+  position,
 } from "@chakra-ui/react";
+// Icons
+import { BsFillQuestionCircleFill } from "react-icons/bs";
 // Country list
 import countryList from "react-select-country-list";
 
 const Settings = () => {
   // States
+  const [userdata, setUserData] = useState({});
+  const [loadingUserData, setLoadingUserData] = useState(true);
+  const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [profileBio, setProfileBio] = useState("");
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [country, setCountry] = useState("");
 
   // Other hooks
+  const { user } = useContext(AuthContext);
   const { accentColor, setAccentColor } = useContext(SettingsContext);
+  const toast = useToast();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      setLoadingUserData(true);
+      const docSnap = await getDoc(doc(db, "users", user.uid));
+      setUserData(docSnap.data());
+      populateFields(docSnap.data());
+      setTimeout(() => {
+        setLoadingUserData(false);
+      }, 250);
+    };
+
+    if (Object.keys(user).length === 0) {
+      return;
+    } else {
+      getUserData();
+    }
+  }, []);
+
+  // Populate fields with user data
+  const populateFields = (data) => {
+    setEmail(data.email);
+    setFirstName(data.firstName);
+    setLastName(data.lastName);
+    setProfileBio(data.profileBio);
+    setUsername(data.username);
+    setPhoneNumber(data.phoneNumber);
+    setCountry(data.country);
+  };
+
+  // Update user data
+  const updateUserData = async () => {
+    console.log(user);
+    const updated = await updateDoc(doc(db, "users", user.uid), {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      profileBio: profileBio,
+      phoneNumber: phoneNumber,
+      country: country,
+      lastUpdatedAt: serverTimestamp(),
+    });
+    toast({
+      title: "Success",
+      description: "Account was updated successfully.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+      variant: "left-accent",
+      position: "bottom-right",
+    });
+  };
 
   // Update accent color
   const updateAccentColor = (color) => {
     setAccentColor(color);
-    localStorage.setItem("accentColor", color)
+    localStorage.setItem("accentColor", color);
   };
 
   return (
@@ -40,20 +111,26 @@ const Settings = () => {
         </TabList>
         <Divider className="mt-4" />
         <TabPanels>
+          {/* Account settings panel */}
           <TabPanel className="w-full flex flex-col items-start">
             <Text
               fontSize="lg"
-              className="font-medium my-3 underline underline-offset-1"
+              className="flex items-center font-medium my-3 underline underline-offset-1"
             >
               Email
+              <Tooltip hasArrow label="Cannot be changed" placement="right-end">
+                <span className="ml-1">
+                  <BsFillQuestionCircleFill className="text-gray-500 hover:text-black" />
+                </span>
+              </Tooltip>
             </Text>
             <Input
               variant="filled"
               placeholder="Email"
               isDisabled={true}
-              value="example@gmail.com"
-              onChange={() => {}}
               className="mb-3"
+              value={email}
+              onChange={() => {}}
             />
 
             <div className="flex w-full mb-3">
@@ -68,8 +145,10 @@ const Settings = () => {
                   variant="filled"
                   focusBorderColor={`${accentColor}.500`}
                   placeholder="First Name"
-                  value=""
-                  onChange={() => {}}
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                  }}
                 />
               </div>
 
@@ -84,8 +163,10 @@ const Settings = () => {
                   variant="filled"
                   focusBorderColor={`${accentColor}.500`}
                   placeholder="Last Name"
-                  value=""
-                  onChange={() => {}}
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -100,9 +181,11 @@ const Settings = () => {
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Tell us a bit about you"
-              value=""
               className="mb-3"
-              onChange={() => {}}
+              value={profileBio}
+              onChange={(e) => {
+                setProfileBio(e.target.value);
+              }}
             />
 
             <Text
@@ -115,9 +198,11 @@ const Settings = () => {
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Username"
-              value=""
               className="mb-3"
-              onChange={() => {}}
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
             />
 
             <Text
@@ -130,9 +215,11 @@ const Settings = () => {
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Phone Number"
-              value=""
               className="mb-3"
-              onChange={() => {}}
+              value={phoneNumber}
+              onChange={(e) => {
+                setPhoneNumber(e.target.value);
+              }}
             />
 
             <Text
@@ -145,9 +232,11 @@ const Settings = () => {
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Select Country"
-              value=""
               className="mb-3"
-              onChange={() => {}}
+              value={country}
+              onChange={(e) => {
+                setCountry(e.target.value);
+              }}
             >
               {countryList()
                 .getData()
@@ -157,8 +246,24 @@ const Settings = () => {
                   </option>
                 ))}
             </Select>
+
+            <div className="mt-4">
+              <Button
+                colorScheme={accentColor}
+                className="mr-3"
+                onClick={() => {
+                  updateUserData();
+                }}
+              >
+                Save
+              </Button>
+              <Button variant="outline" colorScheme={accentColor}>
+                Edit
+              </Button>
+            </div>
           </TabPanel>
 
+          {/* Appearance settings panel */}
           <TabPanel className="w-full flex flex-col items-start">
             <Text
               fontSize="lg"

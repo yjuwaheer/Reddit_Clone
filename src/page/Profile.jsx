@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-// Firestore
+// Firebase
 import { db } from "../shared/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 // Context
