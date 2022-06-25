@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+// Firebase
+import { db } from "../shared/FirebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 // Chakra UI
-import { Divider, Avatar } from "@chakra-ui/react";
+import {
+  Divider,
+  Avatar,
+  SkeletonCircle,
+  SkeletonText,
+} from "@chakra-ui/react";
 // Icons
 import { BsArrowUpSquare, BsArrowDownSquare } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
 
 const PostCard = ({ post }) => {
+  // States
+  const [author, setAuthor] = useState("");
+  const [loadingAuthor, setLoadingAuthor] = useState(true);
+
+  useEffect(() => {
+    const getPostAuthor = async () => {
+      setLoadingAuthor(true);
+      const docSnap = await getDoc(doc(db, "users", post.authorId));
+      setAuthor(docSnap.data());
+      setTimeout(() => {
+        setLoadingAuthor(false);
+      }, 250);
+    };
+
+    getPostAuthor();
+  }, []);
+
   const constructedDate = `${post.postedAt
     .toDate()
     .toDateString()} @ ${post.postedAt.toDate().toLocaleTimeString()}`;
@@ -25,9 +50,18 @@ const PostCard = ({ post }) => {
 
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Avatar name="James Doe" src="" className="mr-3" />
-            <div className="name">
-              Posted by <span className="font-bold">{post.postedBy}</span>
+            {loadingAuthor ? (
+              <SkeletonCircle size="12" className="mr-3" />
+            ) : (
+              <Avatar name={author.username} src="" className="mr-3" />
+            )}
+            <div className="flex items-center">
+              Posted by
+              {loadingAuthor ? (
+                <SkeletonText noOfLines={1} width={20} className="ml-2" />
+              ) : (
+                <span className="font-bold ml-1">{author.username}</span>
+              )}
             </div>
           </div>
 

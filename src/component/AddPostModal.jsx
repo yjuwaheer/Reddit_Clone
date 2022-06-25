@@ -57,7 +57,6 @@ const AddPostModal = ({ isOpen, onClose }) => {
         description: description,
         tags: tags,
         imageLink: "",
-        postedBy: "",
         authorId: user.uid,
         votes: 0,
         commentsCount: 0,
