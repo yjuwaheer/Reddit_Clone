@@ -31,6 +31,7 @@ const Settings = () => {
   // States
   const [userdata, setUserData] = useState({});
   const [loadingUserData, setLoadingUserData] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -73,9 +74,17 @@ const Settings = () => {
     setCountry(data.country);
   };
 
+  // Toggle whether fields are editable or not
+  const toggleFields = () => {
+    if (!isDisabled) {
+      updateUserData();
+    }
+
+    setIsDisabled(!isDisabled);
+  };
+
   // Update user data
   const updateUserData = async () => {
-    console.log(user);
     const updated = await updateDoc(doc(db, "users", user.uid), {
       username: username,
       firstName: firstName,
@@ -142,6 +151,7 @@ const Settings = () => {
                   First Name
                 </Text>
                 <Input
+                  isDisabled={isDisabled}
                   variant="filled"
                   focusBorderColor={`${accentColor}.500`}
                   placeholder="First Name"
@@ -160,6 +170,7 @@ const Settings = () => {
                   Last Name
                 </Text>
                 <Input
+                  isDisabled={isDisabled}
                   variant="filled"
                   focusBorderColor={`${accentColor}.500`}
                   placeholder="Last Name"
@@ -178,6 +189,7 @@ const Settings = () => {
               Profile Bio
             </Text>
             <Textarea
+              isDisabled={isDisabled}
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Tell us a bit about you"
@@ -195,6 +207,7 @@ const Settings = () => {
               Username
             </Text>
             <Input
+              isDisabled={isDisabled}
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Username"
@@ -212,6 +225,7 @@ const Settings = () => {
               Phone Number
             </Text>
             <Input
+              isDisabled={isDisabled}
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Phone Number"
@@ -229,6 +243,7 @@ const Settings = () => {
               Country
             </Text>
             <Select
+              isDisabled={isDisabled}
               variant="filled"
               focusBorderColor={`${accentColor}.500`}
               placeholder="Select Country"
@@ -247,18 +262,14 @@ const Settings = () => {
                 ))}
             </Select>
 
-            <div className="mt-4">
+            <div className="mt-4 self-end">
               <Button
                 colorScheme={accentColor}
-                className="mr-3"
                 onClick={() => {
-                  updateUserData();
+                  toggleFields();
                 }}
               >
-                Save
-              </Button>
-              <Button variant="outline" colorScheme={accentColor}>
-                Edit
+                {isDisabled ? "Edit Fields" : "Lock & Save"}
               </Button>
             </div>
           </TabPanel>
