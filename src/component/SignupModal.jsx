@@ -121,7 +121,7 @@ const SignupModal = ({ isOpen, onClose }) => {
             type="text"
             className="my-2"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value.replace(/\s/g, ""))}
           />
           <Input
             variant="filled"
