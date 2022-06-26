@@ -61,6 +61,7 @@ const Navbar = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
+        localStorage.setItem("localUser", JSON.stringify(userCredential.user));
         setUser(userCredential.user);
         setIsLoggedIn(true);
         setLoading(false);
@@ -83,6 +84,8 @@ const Navbar = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
+        localStorage.removeItem("localUser");
+        setIsLoggedIn(false);
         navigate("/");
       })
       .catch((error) => {
