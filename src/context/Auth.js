@@ -5,7 +5,7 @@ export const AuthContext = createContext({});
 export const AuthContextProvider = ({ children }) => {
   // States
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const localUser = localStorage.getItem("localUser");
@@ -16,11 +16,16 @@ export const AuthContextProvider = ({ children }) => {
       localStorage.setItem("localUser", "{}");
     } else {
       const parseData = JSON.parse(localUser);
+
+      // Return if empty object
+      if (Object.keys(parseData).length === 0) {
+        return;
+      }
+
       const tokenExpirationTime = parseData.stsTokenManager.expirationTime;
 
       // Clear user data if token expired (requires user to log in)
       if (Date.now() > tokenExpirationTime) {
-        setUser({});
         localStorage.removeItem("localUser");
       } else {
         setUser(parseData);
