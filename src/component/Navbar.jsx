@@ -103,7 +103,7 @@ const Navbar = () => {
           navigate("/");
         }}
       >
-        ForumX
+        Comunidad
       </div>
 
       {!isLoggedIn && (
