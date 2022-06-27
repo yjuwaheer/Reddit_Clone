@@ -15,6 +15,8 @@ import {
   Button,
   Input,
 } from "@chakra-ui/react";
+// Icons
+import { BsUpload } from "react-icons/bs";
 
 const Profile = () => {
   // States
@@ -86,12 +88,20 @@ const Profile = () => {
       {!loadingUserData && (
         <div className="relative">
           {userData.bannerImageLink ? (
-            <Image
-              src={userData.bannerImageLink}
-              alt="banner"
-              fit="cover"
-              className="w-full h-72 rounded-xl"
-            />
+            <div>
+              <Image
+                src={userData.bannerImageLink}
+                alt="banner"
+                fit="cover"
+                className="w-full h-72 rounded-xl"
+              />
+              <BsUpload
+                className="absolute right-2 bottom-2 font-extrabold bg-slate-50 p-0.5 text-3xl opacity-70 rounded-md hover:bg-gray-200 hover:cursor-pointer hover:opacity-100"
+                onClick={() => {
+                  bannerRef.current.click();
+                }}
+              />
+            </div>
           ) : (
             <div className="flex justify-center items-center w-full h-72 rounded-xl bg-slate-200">
               <Button
@@ -102,26 +112,25 @@ const Profile = () => {
               >
                 + Add Banner
               </Button>
-              <Input
-                type="file"
-                ref={bannerRef}
-                display="none"
-                accept="image/*"
-                onChange={(e) => {
-                  updateBannerImage(e);
-                }}
-              />
             </div>
           )}
 
           {userData.profileImageLink ? (
-            <Image
-              src={userData.profileImageLink}
-              boxSize="150px"
-              alt="profile"
-              fit="cover"
-              className="rounded-2xl absolute -bottom-8 left-12 shadow-xl"
-            />
+            <div>
+              <Image
+                src={userData.profileImageLink}
+                boxSize="150px"
+                alt="profile"
+                fit="cover"
+                className="rounded-2xl absolute -bottom-8 left-12 shadow-xl"
+              />
+              <BsUpload
+                className="absolute -bottom-6 left-14 font-extrabold bg-slate-50 p-0.5 text-3xl opacity-70 rounded-md hover:bg-gray-200 hover:cursor-pointer hover:opacity-100"
+                onClick={() => {
+                  profileRef.current.click();
+                }}
+              />
+            </div>
           ) : (
             <div
               className="flex justify-center items-center rounded-2xl absolute -bottom-8 left-12 shadow-xl bg-slate-100"
@@ -135,15 +144,6 @@ const Profile = () => {
               >
                 +
               </Button>
-              <Input
-                type="file"
-                ref={profileRef}
-                display="none"
-                accept="image/*"
-                onChange={(e) => {
-                  updateProfileImage(e);
-                }}
-              />
             </div>
           )}
         </div>
@@ -157,7 +157,9 @@ const Profile = () => {
           {userData.profileBio ? (
             <p className="max-w-lg text-left">{userData.profileBio}</p>
           ) : (
-            <p className="max-w-lg text-left text-gray-400">Update your bio in settings</p>
+            <p className="max-w-lg text-left text-gray-400">
+              Update your bio in settings
+            </p>
           )}
         </div>
       )}
@@ -185,6 +187,26 @@ const Profile = () => {
           />
         </div>
       )}
+
+      {/* Input ref (Not displayed) */}
+      <Input
+        type="file"
+        ref={bannerRef}
+        display="none"
+        accept="image/*"
+        onChange={(e) => {
+          updateBannerImage(e);
+        }}
+      />
+      <Input
+        type="file"
+        ref={profileRef}
+        display="none"
+        accept="image/*"
+        onChange={(e) => {
+          updateProfileImage(e);
+        }}
+      />
     </div>
   );
 };
