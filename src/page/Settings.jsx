@@ -100,8 +100,6 @@ const Settings = () => {
       status: "success",
       duration: 3000,
       isClosable: true,
-      variant: "left-accent",
-      position: "bottom-right",
     });
   };
 

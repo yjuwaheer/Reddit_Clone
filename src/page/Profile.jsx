@@ -14,6 +14,8 @@ import {
   SkeletonText,
   Button,
   Input,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
 // Icons
 import { BsUpload } from "react-icons/bs";
@@ -31,6 +33,7 @@ const Profile = () => {
   const { accentColor } = useContext(SettingsContext);
   const profileRef = useRef();
   const bannerRef = useRef();
+  const toast = useToast();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -53,34 +56,72 @@ const Profile = () => {
   const updateBannerImage = async (e) => {
     setBannerImage(e.target.files[0]);
 
-    // Upload banner image to bucket
-    const bannerImageRef = ref(storage, `bannerImages/${user.uid}`);
-    const uploadTask = await uploadBytes(bannerImageRef, e.target.files[0]);
-    const bannerImageUrl = await getDownloadURL(uploadTask.ref);
+    try {
+      toast({
+        title: "Info",
+        description: "Updating banner image.",
+        status: "info",
+        icon: <Spinner />,
+      });
+      // Upload banner image to bucket
+      const bannerImageRef = ref(storage, `bannerImages/${user.uid}`);
+      const uploadTask = await uploadBytes(bannerImageRef, e.target.files[0]);
+      const bannerImageUrl = await getDownloadURL(uploadTask.ref);
 
-    // Update user document in firestore
-    const updated = await updateDoc(doc(db, "users", user.uid), {
-      bannerImageLink: bannerImageUrl,
-      lastUpdatedAt: serverTimestamp(),
-    });
-    setTriggerReload(!triggerReload);
+      // Update user document in firestore
+      const updated = await updateDoc(doc(db, "users", user.uid), {
+        bannerImageLink: bannerImageUrl,
+        lastUpdatedAt: serverTimestamp(),
+      });
+      toast.closeAll();
+      toast({
+        title: "Success",
+        description: "Banner image updated.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setTriggerReload(!triggerReload);
+    } catch (error) {
+      toast.closeAll();
+      console.log(error);
+    }
   };
 
   // Update profile image
   const updateProfileImage = async (e) => {
     setProfileImage(e.target.files[0]);
 
-    // Upload profile image to bucket
-    const profileImageRef = ref(storage, `profileImages/${user.uid}`);
-    const uploadTask = await uploadBytes(profileImageRef, e.target.files[0]);
-    const profileImageUrl = await getDownloadURL(uploadTask.ref);
+    try {
+      toast({
+        title: "Info",
+        description: "Updating profile image.",
+        status: "info",
+        icon: <Spinner />,
+      });
+      // Upload profile image to bucket
+      const profileImageRef = ref(storage, `profileImages/${user.uid}`);
+      const uploadTask = await uploadBytes(profileImageRef, e.target.files[0]);
+      const profileImageUrl = await getDownloadURL(uploadTask.ref);
 
-    // Update user document in firestore
-    const updated = await updateDoc(doc(db, "users", user.uid), {
-      profileImageLink: profileImageUrl,
-      lastUpdatedAt: serverTimestamp(),
-    });
-    setTriggerReload(!triggerReload);
+      // Update user document in firestore
+      const updated = await updateDoc(doc(db, "users", user.uid), {
+        profileImageLink: profileImageUrl,
+        lastUpdatedAt: serverTimestamp(),
+      });
+      toast.closeAll();
+      toast({
+        title: "Success",
+        description: "Profile image updated.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setTriggerReload(!triggerReload);
+    } catch (error) {
+      toast.closeAll();
+      console.log(error);
+    }
   };
 
   return (
