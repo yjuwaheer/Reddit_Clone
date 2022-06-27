@@ -59,7 +59,7 @@ const Profile = () => {
 
     // Update user document in firestore
     const updated = await updateDoc(doc(db, "users", user.uid), {
-      backdropImageLink: bannerImageUrl,
+      bannerImageLink: bannerImageUrl,
       lastUpdatedAt: serverTimestamp(),
     });
     setTriggerReload(!triggerReload);
@@ -86,10 +86,10 @@ const Profile = () => {
     <div className="flex flex-col mt-10 mx-10">
       {!loadingUserData && (
         <div className="relative">
-          {userData.backdropImageLink ? (
+          {userData.bannerImageLink ? (
             <Image
-              src={userData.backdropImageLink}
-              alt="backdrop"
+              src={userData.bannerImageLink}
+              alt="banner"
               fit="cover"
               className="w-full h-72 rounded-xl"
             />

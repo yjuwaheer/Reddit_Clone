@@ -72,7 +72,7 @@ const SignupModal = ({ isOpen, onClose }) => {
         profileBio: "",
         phoneNumber: "",
         country: "",
-        backdropImageLink: "",
+        bannerImageLink: "",
         profileImageLink: "",
         createdAt: serverTimestamp(),
       });
