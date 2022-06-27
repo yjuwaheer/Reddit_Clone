@@ -155,7 +155,11 @@ const Profile = () => {
           <Heading fontSize="xxx-large" className="mt-8 text-gray-700">
             {userData.username}
           </Heading>
-          <p className="max-w-lg text-left">{userData.profileBio}</p>
+          {userData.profileBio ? (
+            <p className="max-w-lg text-left">{userData.profileBio}</p>
+          ) : (
+            <p className="max-w-lg text-left text-gray-400">Update your bio in settings</p>
+          )}
         </div>
       )}
 
