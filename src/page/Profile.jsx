@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 // Firebase
 import { db, storage } from "../shared/FirebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Context
 import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
@@ -12,16 +13,22 @@ import {
   Skeleton,
   SkeletonText,
   Button,
+  Input,
 } from "@chakra-ui/react";
 
 const Profile = () => {
   // States
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [userData, setUserData] = useState({});
+  const [bannerImage, setBannerImage] = useState();
+  const [profileImage, setProfileImage] = useState();
+  const [triggerReload, setTriggerReload] = useState(false);
 
   // Other hooks
   const { user } = useContext(AuthContext);
   const { accentColor } = useContext(SettingsContext);
+  const profileRef = useRef();
+  const bannerRef = useRef();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -39,7 +46,41 @@ const Profile = () => {
     } else {
       getUserData();
     }
-  }, []);
+  }, [triggerReload]);
+
+  // Update banner image
+  const updateBannerImage = async (e) => {
+    setBannerImage(e.target.files[0]);
+
+    // Upload banner image to bucket
+    const bannerImageRef = ref(storage, `bannerImages/${user.uid}`);
+    const uploadTask = await uploadBytes(bannerImageRef, e.target.files[0]);
+    const bannerImageUrl = await getDownloadURL(uploadTask.ref);
+
+    // Update user document in firestore
+    const updated = await updateDoc(doc(db, "users", user.uid), {
+      backdropImageLink: bannerImageUrl,
+      lastUpdatedAt: serverTimestamp(),
+    });
+    setTriggerReload(!triggerReload);
+  };
+
+  // Update profile image
+  const updateProfileImage = async (e) => {
+    setProfileImage(e.target.files[0]);
+
+    // Upload profile image to bucket
+    const profileImageRef = ref(storage, `profileImages/${user.uid}`);
+    const uploadTask = await uploadBytes(profileImageRef, e.target.files[0]);
+    const profileImageUrl = await getDownloadURL(uploadTask.ref);
+
+    // Update user document in firestore
+    const updated = await updateDoc(doc(db, "users", user.uid), {
+      profileImageLink: profileImageUrl,
+      lastUpdatedAt: serverTimestamp(),
+    });
+    setTriggerReload(!triggerReload);
+  };
 
   return (
     <div className="flex flex-col mt-10 mx-10">
@@ -47,20 +88,36 @@ const Profile = () => {
         <div className="relative">
           {userData.backdropImageLink ? (
             <Image
-              src="https://unsplash.com/photos/DlkF4-dbCOU/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjU2MDk2ODQy&force=true&w=2400"
-              alt="Backdrop"
+              src={userData.backdropImageLink}
+              alt="backdrop"
               fit="cover"
               className="w-full h-72 rounded-xl"
             />
           ) : (
             <div className="flex justify-center items-center w-full h-72 rounded-xl bg-slate-200">
-              <Button colorScheme={accentColor}>+ Add Banner</Button>
+              <Button
+                colorScheme={accentColor}
+                onClick={() => {
+                  bannerRef.current.click();
+                }}
+              >
+                + Add Banner
+              </Button>
+              <Input
+                type="file"
+                ref={bannerRef}
+                display="none"
+                accept="image/*"
+                onChange={(e) => {
+                  updateBannerImage(e);
+                }}
+              />
             </div>
           )}
 
           {userData.profileImageLink ? (
             <Image
-              src="https://unsplash.com/photos/RwHv7LgeC7s/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjU2MDk3MTEw&force=true&w=2400"
+              src={userData.profileImageLink}
               boxSize="150px"
               alt="profile"
               fit="cover"
@@ -71,7 +128,23 @@ const Profile = () => {
               className="flex justify-center items-center rounded-2xl absolute -bottom-8 left-12 shadow-xl bg-slate-100"
               style={{ width: 150, height: 150 }}
             >
-              <Button colorScheme={accentColor}>+</Button>
+              <Button
+                colorScheme={accentColor}
+                onClick={() => {
+                  profileRef.current.click();
+                }}
+              >
+                +
+              </Button>
+              <Input
+                type="file"
+                ref={profileRef}
+                display="none"
+                accept="image/*"
+                onChange={(e) => {
+                  updateProfileImage(e);
+                }}
+              />
             </div>
           )}
         </div>
