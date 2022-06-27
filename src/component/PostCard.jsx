@@ -63,7 +63,7 @@ const PostCard = ({ post }) => {
 
   return (
     <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5 hover:drop-shadow-md">
-      <div className="flex flex-col items-center mr-14">
+      <div className="flex flex-col items-center w-20">
         <BsArrowUpSquare
           className="hover:text-green-500 hover:cursor-pointer"
           onClick={() => {
