@@ -34,7 +34,6 @@ const Profile = () => {
     const getUserData = async () => {
       setLoadingUserData(true);
       const docSnap = await getDoc(doc(db, "users", user.uid));
-      console.log(docSnap.data());
       setUserData(docSnap.data());
       setTimeout(() => {
         setLoadingUserData(false);
