@@ -45,7 +45,7 @@ const Profile = () => {
     } else {
       getUserData();
     }
-  }, [triggerReload]);
+  }, [triggerReload, user]);
 
   // Update banner image
   const updateBannerImage = async (e) => {

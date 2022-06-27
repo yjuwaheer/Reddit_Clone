@@ -61,7 +61,7 @@ const Settings = () => {
     } else {
       getUserData();
     }
-  }, []);
+  }, [user]);
 
   // Populate fields with user data
   const populateFields = (data) => {
