@@ -17,9 +17,11 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("New post: ", change.doc.data());
+        // console.log("New post: ", change.doc.data());
       }
       if (change.type === "modified") {
+        // console.log("Modified post: ", change.doc.data());
+
         let alreadyPresent = false;
         posts.forEach((post) => {
           if (post.id === change.doc.id) {
@@ -27,13 +29,26 @@ export const FirestoreDBContextProvider = ({ children }) => {
           }
         });
 
+        // Add new post to array if not present
         if (!alreadyPresent) {
           setPosts([{ id: change.doc.id, ...change.doc.data() }, ...posts]);
         }
-        console.log("Modified post: ", change.doc.data());
+
+        // Update post if already present
+        let tempPosts = [];
+        if (alreadyPresent) {
+          posts.forEach((post) => {
+            if (post.id === change.doc.id) {
+              tempPosts.push({ id: change.doc.id, ...change.doc.data() });
+            } else {
+              tempPosts.push(post);
+            }
+          });
+          setPosts(tempPosts);
+        }
       }
       if (change.type === "removed") {
-        console.log("Removed post: ", change.doc.data());
+        // console.log("Removed post: ", change.doc.data());
       }
     });
   });

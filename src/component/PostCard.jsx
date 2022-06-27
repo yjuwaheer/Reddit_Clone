@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 // Chakra UI
 import {
   Divider,
@@ -35,12 +35,48 @@ const PostCard = ({ post }) => {
     .toDate()
     .toDateString()} @ ${post.postedAt.toDate().toLocaleTimeString()}`;
 
+  // Upvote post
+  const upvotePost = async () => {
+    const newVotes = post.votes + 1;
+
+    try {
+      const updated = await updateDoc(doc(db, "posts", post.id), {
+        votes: newVotes,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Downvote post
+  const downvotePost = async () => {
+    const newVotes = post.votes - 1;
+
+    try {
+      const updated = await updateDoc(doc(db, "posts", post.id), {
+        votes: newVotes,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5 hover:drop-shadow-md">
       <div className="flex flex-col items-center mr-14">
-        <BsArrowUpSquare className="hover:text-green-500 hover:cursor-pointer" />
+        <BsArrowUpSquare
+          className="hover:text-green-500 hover:cursor-pointer"
+          onClick={() => {
+            upvotePost();
+          }}
+        />
         <div className="my-2 font-bold">{post.votes}</div>
-        <BsArrowDownSquare className="hover:text-red-500 hover:cursor-pointer" />
+        <BsArrowDownSquare
+          className="hover:text-red-500 hover:cursor-pointer"
+          onClick={() => {
+            downvotePost();
+          }}
+        />
       </div>
       <div className="w-full">
         <div className="font-black text-3xl text-left">{post.title}</div>
