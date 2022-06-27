@@ -53,7 +53,11 @@ const PostCard = ({ post }) => {
             {loadingAuthor ? (
               <SkeletonCircle size="12" className="mr-3" />
             ) : (
-              <Avatar name={author.username} src="" className="mr-3" />
+              <Avatar
+                name={author.username}
+                src={author.profileImageLink ? author.profileImageLink : ""}
+                className="mr-3"
+              />
             )}
             <div className="flex items-center">
               Posted by
