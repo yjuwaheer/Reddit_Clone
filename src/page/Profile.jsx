@@ -16,6 +16,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Context
 import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
+import { FirestoreDBContext } from "../context/FirestoreDB";
 // Chakra UI
 import {
   Image,
@@ -31,14 +32,13 @@ import {
 import { BsUpload } from "react-icons/bs";
 // Components
 import ProfilePostCard from "../component/ProfilePostCard";
-import PostCard from "../component/PostCard";
 
 const Profile = () => {
   // States
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [userData, setUserData] = useState({});
   const [loadingPosts, setLoadingPosts] = useState(false);
-  const [userPosts, setUserPosts] = useState([]);
+  // const [userPosts, setUserPosts] = useState([]);
   const [bannerImage, setBannerImage] = useState();
   const [profileImage, setProfileImage] = useState();
   const [triggerReload, setTriggerReload] = useState(false);
@@ -46,6 +46,7 @@ const Profile = () => {
   // Other hooks
   const { user } = useContext(AuthContext);
   const { accentColor } = useContext(SettingsContext);
+  const { profilePosts, setProfilePosts } = useContext(FirestoreDBContext);
   const profileRef = useRef();
   const bannerRef = useRef();
   const toast = useToast();
@@ -72,10 +73,9 @@ const Profile = () => {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
         tempPosts.push({ id: doc.id, ...doc.data() });
       });
-      setUserPosts(tempPosts);
+      setProfilePosts(tempPosts);
       setTimeout(() => {
         setLoadingPosts(false);
       }, 250);
@@ -269,8 +269,8 @@ const Profile = () => {
       {/* User posts section */}
       <div className="my-8">
         {!loadingPosts &&
-          userPosts.length > 0 &&
-          userPosts.map((post) => (
+          profilePosts.length > 0 &&
+          profilePosts.map((post) => (
             <ProfilePostCard post={post} key={post.id} />
           ))}
       </div>

@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+// Firebase
+import { db } from "../shared/FirebaseConfig";
+import { doc, deleteDoc } from "firebase/firestore";
 // Chakra UI
-import {
-  Divider,
-  Avatar,
-  SkeletonCircle,
-  SkeletonText,
-} from "@chakra-ui/react";
+import { Divider } from "@chakra-ui/react";
 // Icons
 import { BsArrowUpSquare, BsArrowDownSquare } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
@@ -15,6 +13,13 @@ const ProfilePostCard = ({ post }) => {
   const constructedDate = `${post.postedAt
     .toDate()
     .toDateString()} @ ${post.postedAt.toDate().toLocaleTimeString()}`;
+
+  // Delete post
+  const deletePost = async (postId) => {
+    console.log(postId);
+    const deleted = await deleteDoc(doc(db, "posts", postId));
+    console.log("Deleted: " + deleted);
+  };
 
   return (
     <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5 hover:drop-shadow-md">
@@ -37,8 +42,17 @@ const ProfilePostCard = ({ post }) => {
         <div className="flex justify-between items-center">
           <div className="font-black text-3xl text-left">{post.title}</div>
           <div className="flex items-center">
-            <MdEdit fontSize={20} className="mr-3 hover:cursor-pointer hover:text-gray-500" />
-            <MdDeleteForever fontSize={20} className="hover:cursor-pointer hover:text-red-500" />
+            <MdEdit
+              fontSize={20}
+              className="mr-3 hover:cursor-pointer hover:text-gray-500"
+            />
+            <MdDeleteForever
+              fontSize={20}
+              className="hover:cursor-pointer hover:text-red-500"
+              onClick={() => {
+                deletePost(post.id);
+              }}
+            />
           </div>
         </div>
         <Divider className="my-4" />

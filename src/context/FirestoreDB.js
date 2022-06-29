@@ -8,6 +8,7 @@ export const FirestoreDBContext = createContext({});
 export const FirestoreDBContextProvider = ({ children }) => {
   // States
   const [posts, setPosts] = useState([]);
+  const [profilePosts, setProfilePosts] = useState([]);
 
   useEffect(() => {
     subscribe();
@@ -48,13 +49,21 @@ export const FirestoreDBContextProvider = ({ children }) => {
         }
       }
       if (change.type === "removed") {
-        // console.log("Removed post: ", change.doc.data());
+        console.log("Removed post: ", change.doc.data());
+
+        let tempPosts = posts.filter((post) => post.id !== change.doc.id);
+        setPosts(tempPosts)
+
+        let tempProfilePosts = profilePosts.filter((post) => post.id !== change.doc.id);
+        setProfilePosts(tempProfilePosts);
       }
     });
   });
 
   return (
-    <FirestoreDBContext.Provider value={{ posts, setPosts }}>
+    <FirestoreDBContext.Provider
+      value={{ posts, setPosts, profilePosts, setProfilePosts }}
+    >
       {children}
     </FirestoreDBContext.Provider>
   );
