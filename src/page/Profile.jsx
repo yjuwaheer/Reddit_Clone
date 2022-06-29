@@ -1,7 +1,17 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 // Firebase
 import { db, storage } from "../shared/FirebaseConfig";
-import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  serverTimestamp,
+  query,
+  collection,
+  orderBy,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Context
 import { AuthContext } from "../context/Auth";
@@ -19,11 +29,16 @@ import {
 } from "@chakra-ui/react";
 // Icons
 import { BsUpload } from "react-icons/bs";
+// Components
+import ProfilePostCard from "../component/ProfilePostCard";
+import PostCard from "../component/PostCard";
 
 const Profile = () => {
   // States
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [userData, setUserData] = useState({});
+  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
   const [bannerImage, setBannerImage] = useState();
   const [profileImage, setProfileImage] = useState();
   const [triggerReload, setTriggerReload] = useState(false);
@@ -45,10 +60,32 @@ const Profile = () => {
       }, 250);
     };
 
+    const getUserPosts = async () => {
+      setLoadingPosts(true);
+      const q = query(
+        collection(db, "posts"),
+        orderBy("postedAt", "desc"),
+        where("authorId", "==", user.uid)
+      );
+
+      let tempPosts = [];
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        tempPosts.push({ id: doc.id, ...doc.data() });
+      });
+      setUserPosts(tempPosts);
+      setTimeout(() => {
+        setLoadingPosts(false);
+      }, 250);
+    };
+
     if (Object.keys(user).length === 0) {
       return;
     } else {
       getUserData();
+      getUserPosts();
     }
   }, [triggerReload, user]);
 
@@ -227,6 +264,22 @@ const Profile = () => {
             className="max-w-lg"
           />
         </div>
+      )}
+
+      {/* User posts section */}
+      <div className="my-8">
+        {!loadingPosts &&
+          userPosts.length > 0 &&
+          userPosts.map((post) => (
+            <ProfilePostCard post={post} key={post.id} />
+          ))}
+      </div>
+
+      {loadingPosts && (
+        <>
+          <Skeleton height="150px" className="mb-5" />
+          <Skeleton height="150px" className="mb-5" />
+        </>
       )}
 
       {/* Input ref (Not displayed) */}
