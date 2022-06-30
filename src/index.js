@@ -10,13 +10,13 @@ import { SettingsContextProvider } from "./context/Settings";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <FirestoreDBContextProvider>
-    <AuthContextProvider>
+  <AuthContextProvider>
+    <FirestoreDBContextProvider>
       <SettingsContextProvider>
         <App />
       </SettingsContextProvider>
-    </AuthContextProvider>
-  </FirestoreDBContextProvider>
+    </FirestoreDBContextProvider>
+  </AuthContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

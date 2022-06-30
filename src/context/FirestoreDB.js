@@ -8,7 +8,9 @@ export const FirestoreDBContext = createContext({});
 export const FirestoreDBContextProvider = ({ children }) => {
   // States
   const [posts, setPosts] = useState([]);
+  const [postsTracker, setPostsTracker] = useState([]);
   const [profilePosts, setProfilePosts] = useState([]);
+  const [alertNewPost, setAlertNewPost] = useState(false);
 
   useEffect(() => {
     subscribe();
@@ -18,7 +20,15 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        // console.log("New post: ", change.doc.data());
+        console.log("New post: ", change.doc.data());
+
+        if (postsTracker.includes(change.doc.id)) {
+          console.log("Post present");
+        } else {
+          console.log("Post absent");
+          setAlertNewPost(true);
+          
+        }
       }
       if (change.type === "modified") {
         // console.log("Modified post: ", change.doc.data());
@@ -49,12 +59,14 @@ export const FirestoreDBContextProvider = ({ children }) => {
         }
       }
       if (change.type === "removed") {
-        console.log("Removed post: ", change.doc.data());
+        // console.log("Removed post: ", change.doc.data());
 
         let tempPosts = posts.filter((post) => post.id !== change.doc.id);
-        setPosts(tempPosts)
+        setPosts(tempPosts);
 
-        let tempProfilePosts = profilePosts.filter((post) => post.id !== change.doc.id);
+        let tempProfilePosts = profilePosts.filter(
+          (post) => post.id !== change.doc.id
+        );
         setProfilePosts(tempProfilePosts);
       }
     });
@@ -62,7 +74,16 @@ export const FirestoreDBContextProvider = ({ children }) => {
 
   return (
     <FirestoreDBContext.Provider
-      value={{ posts, setPosts, profilePosts, setProfilePosts }}
+      value={{
+        posts,
+        setPosts,
+        profilePosts,
+        setProfilePosts,
+        alertNewPost,
+        setAlertNewPost,
+        postsTracker,
+        setPostsTracker,
+      }}
     >
       {children}
     </FirestoreDBContext.Provider>

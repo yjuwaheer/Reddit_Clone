@@ -16,9 +16,7 @@ const ProfilePostCard = ({ post }) => {
 
   // Delete post
   const deletePost = async (postId) => {
-    console.log(postId);
-    const deleted = await deleteDoc(doc(db, "posts", postId));
-    console.log("Deleted: " + deleted);
+    await deleteDoc(doc(db, "posts", postId));
   };
 
   return (

@@ -14,18 +14,21 @@ import {
   Divider,
 } from "@chakra-ui/react";
 // Lottie
-import { Player, Controls } from "@lottiefiles/react-lottie-player";
+import { Player } from "@lottiefiles/react-lottie-player";
 // Icons
 import { BsSearch } from "react-icons/bs";
+import { HiRefresh } from "react-icons/hi";
 // Components
 import PostCard from "../component/PostCard";
 
 const Home = () => {
   // States
   const [loading, setLoading] = useState(true);
+  const [trigger, setTrigger] = useState(false);
 
   // Other hooks
-  const { posts, setPosts } = useContext(FirestoreDBContext);
+  const { posts, setPosts, alertNewPost, setAlertNewPost, setPostsTracker } =
+    useContext(FirestoreDBContext);
   const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -33,19 +36,23 @@ const Home = () => {
     const initialPostsFetch = async () => {
       setLoading(true);
       let tempPosts = [];
+      let tempTracker = [];
       const querySnapshot = await getDocs(
         query(collection(db, "posts"), orderBy("postedAt", "desc"))
       );
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         tempPosts.push({ id: doc.id, ...doc.data() });
+        tempTracker.push(doc.id);
       });
       setPosts(tempPosts);
+      setPostsTracker(tempTracker);
       setLoading(false);
+      setAlertNewPost(false);
     };
 
     initialPostsFetch();
-  }, []);
+  }, [trigger]);
 
   return (
     <div className="flex flex-col">
@@ -108,6 +115,18 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {alertNewPost && (
+        <div
+          className="flex items-center fixed bottom-5 left-1/2 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
+          onClick={() => {
+            setTrigger(!trigger);
+          }}
+        >
+          <HiRefresh className="mr-2" />
+          Load new posts
+        </div>
+      )}
     </div>
   );
 };
