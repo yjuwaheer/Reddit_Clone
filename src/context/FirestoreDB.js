@@ -21,7 +21,7 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("New post: ", change.doc.data());
+        // console.log("New post: ", change.doc.data());
 
         if (postsTracker.includes(change.doc.id)) {
           // console.log("Post present");
@@ -32,7 +32,7 @@ export const FirestoreDBContextProvider = ({ children }) => {
         }
       }
       if (change.type === "modified") {
-        console.log("Modified post: ", change.doc.data());
+        // console.log("Modified post: ", change.doc.data());
 
         // HOME POSTS
         let alreadyPresent = false;
