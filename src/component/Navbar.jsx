@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 // Routing
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // Firebase
 import { auth } from "../shared/FirebaseConfig";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
@@ -43,6 +43,7 @@ const Navbar = () => {
   const addPostModal = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Handle login
   const handleLogin = () => {
@@ -160,7 +161,7 @@ const Navbar = () => {
 
       {isLoggedIn && (
         <div>
-          <Button
+          {location.pathname === "/" && <Button
             colorScheme={accentColor}
             variant="solid"
             className="mr-5"
@@ -168,7 +169,7 @@ const Navbar = () => {
           >
             <MdAddBox className="mr-1" />
             Add Post
-          </Button>
+          </Button>}
 
           <Tooltip hasArrow label="Profile">
             <Button
