@@ -25,18 +25,10 @@ import PostCard from "../component/PostCard";
 const Home = () => {
   // States
   const [loading, setLoading] = useState(true);
-  const [trigger, setTrigger] = useState(false);
 
   // Other hooks
   const { user } = useContext(AuthContext);
-  const {
-    posts,
-    setPosts,
-    alertNewPost,
-    setAlertNewPost,
-    setPostsTracker,
-    addedAuthorId,
-  } = useContext(FirestoreDBContext);
+  const { posts, setPosts } = useContext(FirestoreDBContext);
   const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -54,13 +46,11 @@ const Home = () => {
         tempTracker.push(doc.id);
       });
       setPosts(tempPosts);
-      setPostsTracker(tempTracker);
       setLoading(false);
-      setAlertNewPost(false);
     };
 
     initialPostsFetch();
-  }, [trigger]);
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -124,17 +114,13 @@ const Home = () => {
         </div>
       </div>
 
-      {alertNewPost && user.uid !== addedAuthorId && (
-        <div
-          className="flex items-center fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
-          onClick={() => {
-            setTrigger(!trigger);
-          }}
-        >
-          <HiRefresh className="mr-2" />
-          Load new posts
-        </div>
-      )}
+      {/* <div
+        className="flex items-center fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
+        onClick={() => {}}
+      >
+        <HiRefresh className="mr-2" />
+        Load new posts
+      </div> */}
     </div>
   );
 };

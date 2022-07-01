@@ -8,10 +8,7 @@ export const FirestoreDBContext = createContext({});
 export const FirestoreDBContextProvider = ({ children }) => {
   // States
   const [posts, setPosts] = useState([]);
-  const [postsTracker, setPostsTracker] = useState([]);
   const [profilePosts, setProfilePosts] = useState([]);
-  const [alertNewPost, setAlertNewPost] = useState(false);
-  const [addedAuthorId, setAddedAuthorId] = useState("");
 
   useEffect(() => {
     subscribe();
@@ -21,18 +18,10 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        // console.log("New post: ", change.doc.data());
-
-        if (postsTracker.includes(change.doc.id)) {
-          // console.log("Post present");
-        } else {
-          // console.log("Post absent");
-          setAddedAuthorId(change.doc.data().authorId)
-          setAlertNewPost(true);
-        }
+        console.log("New post: ", change.doc.data());
       }
       if (change.type === "modified") {
-        // console.log("Modified post: ", change.doc.data());
+        console.log("Modified post: ", change.doc.data());
 
         // HOME POSTS
         let alreadyPresent = false;
@@ -81,12 +70,6 @@ export const FirestoreDBContextProvider = ({ children }) => {
         setPosts,
         profilePosts,
         setProfilePosts,
-        alertNewPost,
-        setAlertNewPost,
-        postsTracker,
-        setPostsTracker,
-        addedAuthorId,
-        setAddedAuthorId,
       }}
     >
       {children}
