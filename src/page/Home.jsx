@@ -118,7 +118,7 @@ const Home = () => {
 
       {alertNewPost && (
         <div
-          className="flex items-center fixed bottom-5 left-1/2 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
+          className="flex items-center fixed bottom-5 right-5 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
           onClick={() => {
             setTrigger(!trigger);
           }}
