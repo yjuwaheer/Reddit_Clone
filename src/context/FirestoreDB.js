@@ -21,12 +21,12 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("New post: ", change.doc.data());
+        // console.log("New post: ", change.doc.data());
 
         if (postsTracker.includes(change.doc.id)) {
-          console.log("Post present");
+          // console.log("Post present");
         } else {
-          console.log("Post absent");
+          // console.log("Post absent");
           setAddedAuthorId(change.doc.data().authorId)
           setAlertNewPost(true);
         }
