@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { db } from "../shared/FirebaseConfig";
 import { getDocs, collection, query, orderBy } from "firebase/firestore";
 // Context
+import { AuthContext } from "../context/Auth";
 import { FirestoreDBContext } from "../context/FirestoreDB";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
@@ -27,8 +28,15 @@ const Home = () => {
   const [trigger, setTrigger] = useState(false);
 
   // Other hooks
-  const { posts, setPosts, alertNewPost, setAlertNewPost, setPostsTracker } =
-    useContext(FirestoreDBContext);
+  const { user } = useContext(AuthContext);
+  const {
+    posts,
+    setPosts,
+    alertNewPost,
+    setAlertNewPost,
+    setPostsTracker,
+    addedAuthorId,
+  } = useContext(FirestoreDBContext);
   const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -116,7 +124,7 @@ const Home = () => {
         </div>
       </div>
 
-      {alertNewPost && (
+      {alertNewPost && user.uid !== addedAuthorId && (
         <div
           className="flex items-center fixed bottom-5 right-5 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
           onClick={() => {

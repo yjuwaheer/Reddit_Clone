@@ -11,6 +11,7 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const [postsTracker, setPostsTracker] = useState([]);
   const [profilePosts, setProfilePosts] = useState([]);
   const [alertNewPost, setAlertNewPost] = useState(false);
+  const [addedAuthorId, setAddedAuthorId] = useState("");
 
   useEffect(() => {
     subscribe();
@@ -26,8 +27,8 @@ export const FirestoreDBContextProvider = ({ children }) => {
           console.log("Post present");
         } else {
           console.log("Post absent");
+          setAddedAuthorId(change.doc.data().authorId)
           setAlertNewPost(true);
-          
         }
       }
       if (change.type === "modified") {
@@ -83,6 +84,8 @@ export const FirestoreDBContextProvider = ({ children }) => {
         setAlertNewPost,
         postsTracker,
         setPostsTracker,
+        addedAuthorId,
+        setAddedAuthorId,
       }}
     >
       {children}
