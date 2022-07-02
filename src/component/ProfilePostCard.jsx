@@ -5,9 +5,9 @@ import { doc, deleteDoc } from "firebase/firestore";
 // Chakra UI
 import { Divider } from "@chakra-ui/react";
 // Icons
-import { BsArrowUpSquare, BsArrowDownSquare } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
+import { FaVoteYea } from "react-icons/fa";
 
 const ProfilePostCard = ({ post }) => {
   const constructedDate = `${post.postedAt
@@ -22,19 +22,8 @@ const ProfilePostCard = ({ post }) => {
   return (
     <div className="flex drop-shadow-sm border-2 p-4 rounded-md bg-slate-50 mb-5 hover:drop-shadow-md">
       <div className="flex flex-col items-center w-20">
-        <BsArrowUpSquare
-          className="hover:text-green-500 hover:cursor-pointer"
-          // onClick={() => {
-          //   upvotePost();
-          // }}
-        />
+        <FaVoteYea />
         <div className="my-2 font-bold">{post.votes}</div>
-        <BsArrowDownSquare
-          className="hover:text-red-500 hover:cursor-pointer"
-          // onClick={() => {
-          //   downvotePost();
-          // }}
-        />
       </div>
       <div className="w-full">
         <div className="flex justify-between items-center">
