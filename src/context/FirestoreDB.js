@@ -18,10 +18,10 @@ export const FirestoreDBContextProvider = ({ children }) => {
   const subscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("New post: ", change.doc.data());
+        // console.log("New post: ", change.doc.data());
       }
       if (change.type === "modified") {
-        console.log("Modified post: ", change.doc.data());
+        // console.log("Modified post: ", change.doc.data());
 
         // HOME POSTS
         let alreadyPresent = false;
@@ -47,6 +47,27 @@ export const FirestoreDBContextProvider = ({ children }) => {
             }
           });
           setPosts(tempPosts);
+        }
+
+        // PROFILE POSTS
+        let alreadyPresentProfile = false;
+        profilePosts.forEach((post) => {
+          if (post.id === change.doc.id) {
+            alreadyPresentProfile = true;
+          }
+        });
+
+        // Update profile posts if already present
+        let tempProfilePosts = [];
+        if (alreadyPresentProfile) {
+          profilePosts.forEach((post) => {
+            if (post.id === change.doc.id) {
+              tempProfilePosts.push({ id: change.doc.id, ...change.doc.data() });
+            } else {
+              tempProfilePosts.push(post);
+            }
+          });
+          setProfilePosts(tempProfilePosts);
         }
       }
       if (change.type === "removed") {
