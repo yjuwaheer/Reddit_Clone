@@ -3,13 +3,19 @@ import React, { useContext } from "react";
 import { db } from "../shared/FirebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 // Chakra UI
-import { Divider } from "@chakra-ui/react";
+import { Divider, useDisclosure, useToast } from "@chakra-ui/react";
 // Icons
 import { VscCommentDiscussion } from "react-icons/vsc";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { FaVoteYea } from "react-icons/fa";
+// Components
+import EditPostModal from "./EditPostModal";
 
 const ProfilePostCard = ({ post }) => {
+  // Other hooks
+  const editPostModal = useDisclosure();
+  const toast = useToast();
+
   const constructedDate = `${post.postedAt
     .toDate()
     .toDateString()} @ ${post.postedAt.toDate().toLocaleTimeString()}`;
@@ -32,6 +38,7 @@ const ProfilePostCard = ({ post }) => {
             <MdEdit
               fontSize={20}
               className="mr-3 hover:cursor-pointer hover:text-gray-500"
+              onClick={editPostModal.onOpen}
             />
             <MdDeleteForever
               fontSize={20}
@@ -56,6 +63,14 @@ const ProfilePostCard = ({ post }) => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <EditPostModal
+        isOpen={editPostModal.isOpen}
+        onOpen={editPostModal.onOpen}
+        onClose={editPostModal.onClose}
+        post={post}
+      />
     </div>
   );
 };
