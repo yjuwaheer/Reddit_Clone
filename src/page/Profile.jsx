@@ -38,7 +38,6 @@ const Profile = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [userData, setUserData] = useState({});
   const [loadingPosts, setLoadingPosts] = useState(false);
-  // const [userPosts, setUserPosts] = useState([]);
   const [bannerImage, setBannerImage] = useState();
   const [profileImage, setProfileImage] = useState();
   const [triggerReload, setTriggerReload] = useState(false);
@@ -162,9 +161,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col mt-10 mx-10">
+    <div className="flex flex-col mt-10">
       {!loadingUserData && (
-        <div className="relative">
+        <div className="relative mx-10">
           {userData.bannerImageLink ? (
             <div>
               <Image
@@ -228,7 +227,7 @@ const Profile = () => {
       )}
 
       {!loadingUserData && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mx-10">
           <Heading fontSize="xxx-large" className="mt-8 text-gray-700">
             {userData.username}
           </Heading>
@@ -243,7 +242,7 @@ const Profile = () => {
       )}
 
       {loadingUserData && (
-        <div className="relative">
+        <div className="relative mx-10">
           <Skeleton className="w-full h-72" />
           <Skeleton
             width={150}
@@ -254,7 +253,7 @@ const Profile = () => {
       )}
 
       {loadingUserData && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mx-10">
           <Skeleton height="30px" width="150px" className="mt-8 mb-2" />
           <SkeletonText
             mt="4"
@@ -276,10 +275,10 @@ const Profile = () => {
       </div>
 
       {loadingPosts && (
-        <>
+        <div className="mx-10">
           <Skeleton height="150px" className="mb-5" />
           <Skeleton height="150px" className="mb-5" />
-        </>
+        </div>
       )}
 
       {/* Input ref (Not displayed) */}
