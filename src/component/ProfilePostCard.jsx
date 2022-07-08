@@ -53,10 +53,10 @@ const ProfilePostCard = ({ post }) => {
         <div className="w-full">
           <div className="flex justify-between items-center">
             <div className="font-black text-3xl text-left">{post.title}</div>
-            <div className="flex items-center">
+            <div className="flex items-center p-1 rounded-md bg-slate-200">
               <MdEdit
                 fontSize={20}
-                className="mr-3 hover:cursor-pointer hover:text-gray-500"
+                className="mr-3 hover:cursor-pointer hover:text-zinc-400"
                 onClick={editPostModal.onOpen}
               />
               <MdDeleteForever
