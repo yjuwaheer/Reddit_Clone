@@ -29,6 +29,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
   const [searchPosts, setSearchPosts] = useState([]);
+  const [randomTags, setRandomTags] = useState([]);
 
   // Other hooks
   const { user } = useContext(AuthContext);
@@ -41,6 +42,7 @@ const Home = () => {
     const initialPostsFetch = async () => {
       setLoading(true);
       let tempPosts = [];
+      let tempTags = [];
       let tempTracker = [];
       const querySnapshot = await getDocs(
         query(collection(db, "posts"), orderBy("postedAt", "desc"))
@@ -49,7 +51,17 @@ const Home = () => {
         // doc.data() is never undefined for query doc snapshots
         tempPosts.push({ id: doc.id, ...doc.data() });
         tempTracker.push(doc.id);
+
+        // Get random tags
+        doc.data().tags.forEach((tag) => {
+          if (!tempTags.includes(tag) && tempTags.length < 15) {
+            if (Math.random() > 0.5) {
+            tempTags.push(tag);
+            }
+          }
+        });
       });
+      setRandomTags(tempTags);
       setPosts(tempPosts);
       setLoading(false);
     };
@@ -160,17 +172,16 @@ const Home = () => {
 
           <Divider className="my-2" />
 
-          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
-            Cars
-          </div>
-          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
-            Computers
-          </div>
-          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
-            JS
-          </div>
-          <div className="text-xl my-1 font-mono text-gray-600 hover:underline hover:underline-offset-1 hover:cursor-pointer">
-            Space
+          <div className="overflow-y-scroll">
+            {randomTags.length > 0 &&
+              randomTags.map((tag) => (
+                <div
+                  className="text-xl my-1 py-1 font-mono text-gray-600 hover:underline-offset-1 hover:cursor-pointer hover:bg-slate-100 hover:rounded-md hover:shadow-sm hover:text-gray-900"
+                  key={tag}
+                >
+                  {tag}
+                </div>
+              ))}
           </div>
         </div>
       </div>
