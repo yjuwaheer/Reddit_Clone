@@ -25,6 +25,8 @@ import PostCard from "../component/PostCard";
 const Home = () => {
   // States
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
+  const [searchPosts, setSearchPosts] = useState([]);
 
   // Other hooks
   const { user } = useContext(AuthContext);
@@ -52,6 +54,27 @@ const Home = () => {
     initialPostsFetch();
   }, []);
 
+  // Search posts
+  const searchPostsFetch = async (text) => {
+    if (text.length === 0) {
+      setSearching(false);
+      setSearchPosts([]);
+      return;
+    }
+
+    setSearching(true);
+    let tempPosts = [];
+
+    const querySnapshot = await getDocs(query(collection(db, "posts")));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      if (doc.data().title.toLowerCase().includes(text.toLowerCase())) {
+        tempPosts.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    setSearchPosts(tempPosts);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="self-center w-80 mt-10">
@@ -61,6 +84,9 @@ const Home = () => {
             placeholder="Search"
             variant="filled"
             focusBorderColor={`${accentColor}.500`}
+            onChange={(e) => {
+              searchPostsFetch(e.target.value);
+            }}
           />
         </InputGroup>
       </div>
@@ -77,9 +103,26 @@ const Home = () => {
 
           {!loading &&
             posts.length > 0 &&
+            searchPosts.length === 0 &&
+            !searching &&
             posts.map((post) => <PostCard post={post} key={post.id} />)}
 
-          {!loading && posts.length === 0 && (
+          {!loading &&
+            searchPosts.length > 0 &&
+            searchPosts.map((post) => <PostCard post={post} key={post.id} />)}
+
+          {!loading && searchPosts.length === 0 && searching && (
+            <div className="flex flex-col justify-center">
+              <div className="text-2xl font-bold">
+                Sorry, we couldn't find any results :-(
+              </div>
+              <div className="text-xl font-medium">
+                Try searching something else
+              </div>
+            </div>
+          )}
+
+          {!loading && posts.length === 0 && searchPosts === 0 && (
             <>
               <Player
                 autoplay
