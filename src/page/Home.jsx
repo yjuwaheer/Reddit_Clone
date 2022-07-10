@@ -65,7 +65,6 @@ const Home = () => {
       return;
     }
 
-    setSearching(true);
     let tempPosts = [];
 
     const querySnapshot = await getDocs(query(collection(db, "posts")));
@@ -76,6 +75,7 @@ const Home = () => {
       }
     });
     setSearchPosts(tempPosts);
+    setSearching(true);
   };
 
   return (
