@@ -97,7 +97,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center bg-gray-50 px-8 py-3">
+    <div className="flex justify-between items-center bg-gray-50 px-8 py-3 sticky top-0 z-50 border-b-2">
       <div
         className="text-2xl font-bold hover:cursor-pointer"
         onClick={() => {
