@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
 import { getDocs, collection, query, orderBy } from "firebase/firestore";
@@ -10,7 +10,9 @@ import { SettingsContext } from "../context/Settings";
 import {
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Input,
+  Button,
   Skeleton,
   Divider,
 } from "@chakra-ui/react";
@@ -18,7 +20,7 @@ import {
 import { Player } from "@lottiefiles/react-lottie-player";
 // Icons
 import { BsSearch } from "react-icons/bs";
-import { HiRefresh } from "react-icons/hi";
+import { MdClear } from "react-icons/md";
 // Components
 import PostCard from "../component/PostCard";
 
@@ -32,6 +34,7 @@ const Home = () => {
   const { user } = useContext(AuthContext);
   const { posts, setPosts } = useContext(FirestoreDBContext);
   const { accentColor } = useContext(SettingsContext);
+  const searchInput = useRef();
 
   useEffect(() => {
     // Inital posts fetch
@@ -81,6 +84,7 @@ const Home = () => {
         <InputGroup>
           <InputLeftElement pointerEvents="none" children={<BsSearch />} />
           <Input
+            ref={searchInput}
             placeholder="Search"
             variant="filled"
             focusBorderColor={`${accentColor}.500`}
@@ -88,6 +92,20 @@ const Home = () => {
               searchPostsFetch(e.target.value);
             }}
           />
+          {searching && (
+            <InputRightElement width="4.5rem">
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={() => {
+                  searchInput.current.value = "";
+                  searchPostsFetch("");
+                }}
+              >
+                <MdClear />
+              </Button>
+            </InputRightElement>
+          )}
         </InputGroup>
       </div>
 
