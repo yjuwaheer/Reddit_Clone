@@ -56,7 +56,7 @@ const Home = () => {
         doc.data().tags.forEach((tag) => {
           if (!tempTags.includes(tag) && tempTags.length < 15) {
             if (Math.random() > 0.5) {
-            tempTags.push(tag);
+              tempTags.push(tag);
             }
           }
         });
@@ -182,6 +182,13 @@ const Home = () => {
                   {tag}
                 </div>
               ))}
+            {loading && (
+              <>
+                <Skeleton height="30px" className="my-2 py-1" />
+                <Skeleton height="30px" className="my-2 py-1" />
+                <Skeleton height="30px" className="my-2 py-1" />
+              </>
+            )}
           </div>
         </div>
       </div>
