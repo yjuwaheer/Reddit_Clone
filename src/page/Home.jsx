@@ -125,9 +125,9 @@ const Home = () => {
         <div className="w-4/5">
           {loading && (
             <>
-              <Skeleton height="150px" className="mb-5" />
-              <Skeleton height="150px" className="mb-5" />
-              <Skeleton height="150px" className="mb-5" />
+              <Skeleton height="175px" className="mb-5" />
+              <Skeleton height="175px" className="mb-5" />
+              <Skeleton height="175px" className="mb-5" />
             </>
           )}
 

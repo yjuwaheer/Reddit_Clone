@@ -1,0 +1,130 @@
+import React, { useEffect, useState, useContext } from "react";
+// Router
+import { useNavigate, useParams } from "react-router-dom";
+// Firebase
+import { db } from "../shared/FirebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+// Chakra UI
+import {
+  Button,
+  Divider,
+  Avatar,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+} from "@chakra-ui/react";
+// Icons
+import { BsArrowUpSquare, BsArrowDownSquare } from "react-icons/bs";
+import { VscCommentDiscussion } from "react-icons/vsc";
+import { IoMdArrowRoundBack } from "react-icons/io";
+
+const Post = () => {
+  // States
+  const [post, setPost] = useState({});
+  const [author, setAuthor] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [loadingAuthor, setLoadingAuthor] = useState(true);
+
+  // Other hooks
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    getPost();
+  }, []);
+
+  // Get post data from firebase
+  const getPost = async () => {
+    try {
+      const docRef = doc(db, "posts", id);
+      const docSnap = await getDoc(docRef);
+      setPost(docSnap.data());
+      console.log(docSnap.data());
+      setTimeout(() => {
+        setLoading(false);
+      }, 250);
+      getPostAuthor(docSnap.data().authorId);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  // Get the author of the post
+  const getPostAuthor = async (authorId) => {
+    setLoadingAuthor(true);
+    const docSnap = await getDoc(doc(db, "users", authorId));
+    setAuthor(docSnap.data());
+    setTimeout(() => {
+      setLoadingAuthor(false);
+    }, 250);
+  };
+
+  return (
+    <div>
+      {loading && <Skeleton height="175px" className="mt-10 mx-48" />}
+
+      {!loading && (
+        <div className="flex drop-shadow-sm border-2 p-4 mt-10 mx-48 rounded-md bg-slate-50 mb-5 relative">
+          <div className="fixed -top-5 -left-7 shadow-md rounded-lg border-2 border-zinc-400">
+            <Button
+              colorScheme="gray"
+              variant="solid"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              <IoMdArrowRoundBack />
+            </Button>
+          </div>
+
+          <div className="flex flex-col items-center w-20">
+            <BsArrowUpSquare className="hover:text-green-500 hover:cursor-pointer" />
+            <div className="my-2 font-bold">{post.votes}</div>
+            <BsArrowDownSquare className="hover:text-red-500 hover:cursor-pointer" />
+          </div>
+          <div className="w-full">
+            <div className="font-black text-3xl text-left">{post.title}</div>
+            <Divider className="my-4" />
+            <div className="text-lg text-left">{post.description}</div>
+            <Divider className="my-4" />
+
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                {loadingAuthor ? (
+                  <SkeletonCircle size="12" className="mr-3" />
+                ) : (
+                  <Avatar
+                    name={author.username}
+                    src={author.profileImageLink ? author.profileImageLink : ""}
+                    className="mr-3"
+                  />
+                )}
+                <div className="flex items-center">
+                  Posted by
+                  {loadingAuthor ? (
+                    <SkeletonText noOfLines={1} width={20} className="ml-2" />
+                  ) : (
+                    <span className="font-bold ml-1">{author.username}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <div className="font-semibold text-gray-400 mr-10">
+                  {`${post.postedAt.toDate().toDateString()} @ ${post.postedAt
+                    .toDate()
+                    .toLocaleTimeString()}`}
+                </div>
+                {post.commentsCount}
+                <VscCommentDiscussion className="ml-2" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Post;

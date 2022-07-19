@@ -7,6 +7,7 @@ import { AuthContext } from "./context/Auth";
 import { SettingsContext } from "./context/Settings";
 // Pages
 import Home from "./page/Home";
+import Post from "./page/Post";
 import Profile from "./page/Profile";
 import Settings from "./page/Settings";
 // Components
@@ -35,6 +36,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="post/:id" element={<Post />} />
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Settings />} />
           </Routes>

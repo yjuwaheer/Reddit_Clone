@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+// Router
+import { useNavigate } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -17,6 +19,9 @@ const PostCard = ({ post }) => {
   // States
   const [author, setAuthor] = useState("");
   const [loadingAuthor, setLoadingAuthor] = useState(true);
+
+  // Other hooks
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getPostAuthor = async () => {
@@ -79,7 +84,14 @@ const PostCard = ({ post }) => {
         />
       </div>
       <div className="w-full">
-        <div className="font-black text-3xl text-left">{post.title}</div>
+        <div
+          className="font-black text-3xl text-left text-gray-700 hover:cursor-pointer hover:text-gray-900"
+          onClick={() => {
+            navigate(`/post/${post.id}`);
+          }}
+        >
+          {post.title}
+        </div>
         <Divider className="my-4" />
         <div className="text-lg text-left">{post.description}</div>
         <Divider className="my-4" />
