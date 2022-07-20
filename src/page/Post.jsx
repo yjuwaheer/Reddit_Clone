@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+// Context
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Button,
@@ -12,11 +14,15 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  Textarea,
 } from "@chakra-ui/react";
 // Icons
 import { BsArrowUpSquare, BsArrowDownSquare } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { BiCommentDetail } from "react-icons/bi";
+// Components
+import CommentSection from "../component/CommentSection";
 
 const Post = () => {
   // States
@@ -28,6 +34,7 @@ const Post = () => {
   // Other hooks
   const navigate = useNavigate();
   const { id } = useParams();
+  const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
     getPost();
@@ -39,10 +46,10 @@ const Post = () => {
       const docRef = doc(db, "posts", id);
       const docSnap = await getDoc(docRef);
       setPost(docSnap.data());
-      console.log(docSnap.data());
       setTimeout(() => {
         setLoading(false);
       }, 250);
+      console.log(docSnap.data().authorId)
       getPostAuthor(docSnap.data().authorId);
     } catch (error) {
       setLoading(false);
@@ -61,11 +68,11 @@ const Post = () => {
   };
 
   return (
-    <div>
-      {loading && <Skeleton height="175px" className="mt-10 mx-48" />}
+    <div className="flex flex-col items-center mb-10">
+      {loading && <Skeleton height="175px" className="w-9/12 mt-10" />}
 
       {!loading && (
-        <div className="flex drop-shadow-sm border-2 p-4 mt-10 mx-48 rounded-md bg-slate-50 mb-5 relative">
+        <div className="flex drop-shadow-sm border-2 w-9/12 p-4 mt-10 rounded-md bg-slate-50 mb-5 relative">
           <div className="fixed -top-5 -left-7 shadow-md rounded-lg border-2 border-zinc-400">
             <Button
               colorScheme="gray"
@@ -123,6 +130,9 @@ const Post = () => {
           </div>
         </div>
       )}
+
+      {/* Comments section of the post */}
+      <CommentSection />
     </div>
   );
 };
