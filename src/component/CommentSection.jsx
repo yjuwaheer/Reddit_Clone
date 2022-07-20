@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
+// Router
+import { useParams } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, addDoc, collection, getDocs } from "firebase/firestore";
 // Context
+import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
@@ -13,30 +16,69 @@ import {
   SkeletonCircle,
   SkeletonText,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 // Icons
 import { BiCommentDetail } from "react-icons/bi";
 
-const CommentSection = () => {
+const CommentSection = ({ author }) => {
   // States
-  const [author, setAuthor] = useState({});
-  const [loadingAuthor, setLoadingAuthor] = useState(true);
+  const [comment, setComment] = useState("");
+  const [userComments, setUserComments] = useState([]);
+  const [loadingAuthor, setLoadingAuthor] = useState(false);
 
   // Other hooks
+  const { user } = useContext(AuthContext);
+  const { postId } = useParams();
   const { accentColor } = useContext(SettingsContext);
+  const toast = useToast();
 
   useEffect(() => {
-    getPostAuthor("KD3I1q6HZfYXcZe8ao0qpUZkiHW2");
+    getComments(postId);
   }, []);
 
-  // Get the author of the post
-  const getPostAuthor = async (authorId) => {
-    setLoadingAuthor(true);
-    const docSnap = await getDoc(doc(db, "users", authorId));
-    setAuthor(docSnap.data());
-    setTimeout(() => {
-      setLoadingAuthor(false);
-    }, 250);
+  // Fetch the user comments related to the post if any
+  const getComments = async (postId) => {
+    let tempComments = [];
+
+    const querySnapshot = await getDocs(collection(db, postId));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      tempComments.push({id: doc.id, ...doc.data()})
+    });
+    if (tempComments.length > 0) {
+      console.log(tempComments)
+      console.log("Comments present");
+    } else {
+      console.log("No comments");
+    }
+  };
+
+  // Get the author of the comment
+
+  // Save new comment
+  const saveComment = async () => {
+    if (comment.length <= 10) {
+      toast({
+        title: "Info",
+        description: "Comment must be at least 10 characters.",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    console.log(user.uid);
+
+    try {
+      const docRef = addDoc(collection(db, postId), {
+        comment: comment,
+        commentAuthorId: user.uid,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -49,8 +91,16 @@ const CommentSection = () => {
           rows="8"
           className="p-2 w-full rounded-lg resize-none"
           placeholder="Type your comment here..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
         ></Textarea>
-        <Button className="self-end mt-2" colorScheme={accentColor}>
+        <Button
+          className="self-end mt-2"
+          colorScheme={accentColor}
+          onClick={() => {
+            saveComment();
+          }}
+        >
           <BiCommentDetail className="mr-2" />
           Add Comment
         </Button>

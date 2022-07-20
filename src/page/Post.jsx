@@ -33,7 +33,7 @@ const Post = () => {
 
   // Other hooks
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { postId } = useParams();
   const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
@@ -43,13 +43,12 @@ const Post = () => {
   // Get post data from firebase
   const getPost = async () => {
     try {
-      const docRef = doc(db, "posts", id);
+      const docRef = doc(db, "posts", postId);
       const docSnap = await getDoc(docRef);
       setPost(docSnap.data());
       setTimeout(() => {
         setLoading(false);
       }, 250);
-      console.log(docSnap.data().authorId)
       getPostAuthor(docSnap.data().authorId);
     } catch (error) {
       setLoading(false);
@@ -132,7 +131,7 @@ const Post = () => {
       )}
 
       {/* Comments section of the post */}
-      <CommentSection />
+      <CommentSection author={author} />
     </div>
   );
 };
