@@ -31,29 +31,38 @@ const Comment = ({ commentObj }) => {
 
   return (
     <div className="flex flex-col items-start mb-5 bg-slate-50 p-3 rounded-md border-2 border-slate-200">
-      <div className="flex items-center">
-        {loadingAuthor ? (
-          <SkeletonCircle size="12" className="mr-3" />
-        ) : (
-          <Avatar
-            name={commentAuthor.username}
-            src={
-              commentAuthor.profileImageLink
-                ? commentAuthor.profileImageLink
-                : ""
-            }
-            className="mr-3"
-          />
-        )}
+      <div className="w-full flex items-center justify-between">
         <div className="flex items-center">
           {loadingAuthor ? (
-            <SkeletonText noOfLines={1} width={20} className="mr-2" />
+            <SkeletonCircle size="12" className="mr-3" />
           ) : (
-            <span className="font-extrabold mr-1 text-xl">
-              {commentAuthor.username}
-            </span>
-          )}{" "}
-          <span className="text-xl">commented</span>
+            <Avatar
+              name={commentAuthor.username}
+              src={
+                commentAuthor.profileImageLink
+                  ? commentAuthor.profileImageLink
+                  : ""
+              }
+              className="mr-3"
+            />
+          )}
+          <div className="flex items-center">
+            {loadingAuthor ? (
+              <SkeletonText noOfLines={1} width={20} className="mr-2" />
+            ) : (
+              <span className="font-extrabold mr-1 text-xl">
+                {commentAuthor.username}
+              </span>
+            )}{" "}
+            <span className="text-xl">commented</span>
+          </div>
+        </div>
+        <div className="font-semibold text-gray-400">
+          {`${commentObj.createdAt
+            .toDate()
+            .toDateString()} @ ${commentObj.createdAt
+            .toDate()
+            .toLocaleTimeString()}`}
         </div>
       </div>
       <Divider className="my-4" />
