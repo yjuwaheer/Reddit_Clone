@@ -30,6 +30,7 @@ const Post = () => {
   const [author, setAuthor] = useState({});
   const [loading, setLoading] = useState(true);
   const [loadingAuthor, setLoadingAuthor] = useState(true);
+  const [triggerReload, setTriggerReload] = useState(false);
 
   // Other hooks
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Post = () => {
 
   useEffect(() => {
     getPost();
-  }, []);
+  }, [triggerReload]);
 
   // Get post data from firebase
   const getPost = async () => {
@@ -131,7 +132,7 @@ const Post = () => {
       )}
 
       {/* Comments section of the post */}
-      <CommentSection author={author} />
+      <CommentSection author={author} triggerReload={triggerReload} setTriggerReload={setTriggerReload} />
     </div>
   );
 };

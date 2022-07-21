@@ -11,6 +11,8 @@ import {
   getDocs,
   serverTimestamp,
   updateDoc,
+  query,
+  orderBy,
 } from "firebase/firestore";
 // Context
 import { AuthContext } from "../context/Auth";
@@ -23,7 +25,7 @@ import { VscSmiley } from "react-icons/vsc";
 // Components
 import Comment from "./Comment";
 
-const CommentSection = ({ author }) => {
+const CommentSection = ({ triggerReload, setTriggerReload }) => {
   // States
   const [comment, setComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(true);
@@ -37,14 +39,16 @@ const CommentSection = ({ author }) => {
 
   useEffect(() => {
     getComments(postId);
-  }, []);
+  }, [triggerReload]);
 
   // Fetch the user comments related to the post if any
   const getComments = async (postId) => {
     let tempComments = [];
 
     try {
-      const querySnapshot = await getDocs(collection(db, postId));
+      const querySnapshot = await getDocs(
+        query(collection(db, postId), orderBy("createdAt", "desc"))
+      );
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         tempComments.push({ id: doc.id, ...doc.data() });
@@ -97,6 +101,7 @@ const CommentSection = ({ author }) => {
       const updated = await updateDoc(doc(db, "posts", postId), {
         commentsCount: newCount,
       });
+      setTriggerReload(!triggerReload);
     } catch (error) {
       console.log(error);
     }
