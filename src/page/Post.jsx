@@ -4,8 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-// Context
-import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Button,
@@ -14,13 +12,11 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
-  Textarea,
 } from "@chakra-ui/react";
 // Icons
-import { BsArrowUpSquare, BsArrowDownSquare } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { BiCommentDetail } from "react-icons/bi";
+import { FaVoteYea } from "react-icons/fa";
 // Components
 import CommentSection from "../component/CommentSection";
 
@@ -35,7 +31,6 @@ const Post = () => {
   // Other hooks
   const navigate = useNavigate();
   const { postId } = useParams();
-  const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
     getPost();
@@ -86,9 +81,8 @@ const Post = () => {
           </div>
 
           <div className="flex flex-col items-center w-20">
-            <BsArrowUpSquare className="hover:text-green-500 hover:cursor-pointer" />
+            <FaVoteYea />
             <div className="my-2 font-bold">{post.votes}</div>
-            <BsArrowDownSquare className="hover:text-red-500 hover:cursor-pointer" />
           </div>
           <div className="w-full">
             <div className="font-black text-3xl text-left">{post.title}</div>
@@ -132,7 +126,11 @@ const Post = () => {
       )}
 
       {/* Comments section of the post */}
-      <CommentSection author={author} triggerReload={triggerReload} setTriggerReload={setTriggerReload} />
+      <CommentSection
+        author={author}
+        triggerReload={triggerReload}
+        setTriggerReload={setTriggerReload}
+      />
     </div>
   );
 };
