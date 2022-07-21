@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 // Icons
 import { BiCommentDetail } from "react-icons/bi";
-import { VscSmiley } from "react-icons/vsc";
+import { BsEmojiSmile } from "react-icons/bs";
 import { AiFillLock } from "react-icons/ai";
 // Components
 import Comment from "./Comment";
@@ -163,9 +163,9 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
 
         {!loadingComments && userComments.length === 0 && (
           <>
-            <div className="font-bold text-xl">No comments yet...</div>
-            <div className="flex items-center justify-center font-medium text-lg">
-              Be the first one to comment <VscSmiley className="ml-1" />
+            <div className="font-bold text-2xl">No comments yet...</div>
+            <div className="flex items-center justify-center font-medium text-xl">
+              Be the first one to comment <BsEmojiSmile className="ml-1" />
             </div>
           </>
         )}

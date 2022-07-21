@@ -19,7 +19,7 @@ import {
 // Lottie
 import { Player } from "@lottiefiles/react-lottie-player";
 // Icons
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsEmojiSmileUpsideDown } from "react-icons/bs";
 import { MdClear } from "react-icons/md";
 // Components
 import PostCard from "../component/PostCard";
@@ -144,10 +144,10 @@ const Home = () => {
           {!loading && searchPosts.length === 0 && searching && (
             <div className="flex flex-col justify-center">
               <div className="text-2xl font-bold">
-                Sorry, we couldn't find any results :-(
+                Sorry, we couldn't find any results...
               </div>
-              <div className="text-xl font-medium">
-                Try searching something else
+              <div className="flex items-center justify-center  text-xl font-medium">
+                Try searching something else <BsEmojiSmileUpsideDown className="ml-1" />
               </div>
             </div>
           )}

@@ -29,7 +29,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 // Icons
-import { BsUpload } from "react-icons/bs";
+import { BsUpload, BsEmojiWink } from "react-icons/bs";
 // Components
 import ProfilePostCard from "../component/ProfilePostCard";
 
@@ -272,6 +272,19 @@ const Profile = () => {
           profilePosts.map((post) => (
             <ProfilePostCard post={post} key={post.id} />
           ))}
+      </div>
+
+      <div className="my-8">
+        {!loadingPosts && profilePosts.length === 0 && (
+          <div className="flex flex-col justify-center">
+            <div className="text-2xl font-bold">
+              Looks a bit empty around here...
+            </div>
+            <div className="flex items-center justify-center text-xl font-medium">
+              Try adding a new post <BsEmojiWink className="ml-1" />
+            </div>
+          </div>
+        )}
       </div>
 
       {loadingPosts && (
