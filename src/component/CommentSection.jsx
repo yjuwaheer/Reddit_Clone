@@ -3,29 +3,31 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
-import { doc, getDoc, addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  getDocs,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 // Context
 import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
-import {
-  Button,
-  Divider,
-  Avatar,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-  Textarea,
-  useToast,
-} from "@chakra-ui/react";
+import { Button, Skeleton, Textarea, useToast } from "@chakra-ui/react";
 // Icons
 import { BiCommentDetail } from "react-icons/bi";
+import { VscSmiley } from "react-icons/vsc";
+// Components
+import Comment from "./Comment";
 
 const CommentSection = ({ author }) => {
   // States
   const [comment, setComment] = useState("");
+  const [loadingComments, setLoadingComments] = useState(true);
   const [userComments, setUserComments] = useState([]);
-  const [loadingAuthor, setLoadingAuthor] = useState(false);
 
   // Other hooks
   const { user } = useContext(AuthContext);
@@ -41,20 +43,24 @@ const CommentSection = ({ author }) => {
   const getComments = async (postId) => {
     let tempComments = [];
 
-    const querySnapshot = await getDocs(collection(db, postId));
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      tempComments.push({id: doc.id, ...doc.data()})
-    });
-    if (tempComments.length > 0) {
-      console.log(tempComments)
-      console.log("Comments present");
-    } else {
-      console.log("No comments");
+    try {
+      const querySnapshot = await getDocs(collection(db, postId));
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        tempComments.push({ id: doc.id, ...doc.data() });
+      });
+
+      if (tempComments.length > 0) {
+        setUserComments(tempComments);
+        setLoadingComments(false);
+      } else {
+        setLoadingComments(false);
+      }
+    } catch (error) {
+      setLoadingComments(false);
+      console.log(error);
     }
   };
-
-  // Get the author of the comment
 
   // Save new comment
   const saveComment = async () => {
@@ -72,9 +78,24 @@ const CommentSection = ({ author }) => {
     console.log(user.uid);
 
     try {
-      const docRef = addDoc(collection(db, postId), {
-        comment: comment,
+      const docRef = await addDoc(collection(db, postId), {
+        text: comment,
         commentAuthorId: user.uid,
+        createdAt: serverTimestamp(),
+      });
+      incrementCommentCount();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Update comment count
+  const incrementCommentCount = async () => {
+    try {
+      const docSnap = await getDoc(doc(db, "posts", postId));
+      const newCount = docSnap.data().commentsCount + 1;
+      const updated = await updateDoc(doc(db, "posts", postId), {
+        commentsCount: newCount,
       });
     } catch (error) {
       console.log(error);
@@ -107,31 +128,28 @@ const CommentSection = ({ author }) => {
       </div>
 
       <div className="mt-12 w-8/12">
-        <div className="flex flex-col items-start bg-slate-50 p-3 rounded-md border-2 border-slate-200">
-          <div className="flex items-center">
-            {loadingAuthor ? (
-              <SkeletonCircle size="12" className="mr-3" />
-            ) : (
-              <Avatar
-                name={author.username}
-                src={author.profileImageLink ? author.profileImageLink : ""}
-                className="mr-3"
-              />
-            )}
-            <div className="flex items-center">
-              {loadingAuthor ? (
-                <SkeletonText noOfLines={1} width={20} className="mr-2" />
-              ) : (
-                <span className="font-extrabold mr-1 text-xl">
-                  {author.username}
-                </span>
-              )}{" "}
-              <span className="text-xl">commented</span>
+        {loadingComments && (
+          <>
+            <Skeleton height="150px" className="mb-5" />
+            <Skeleton height="150px" className="mb-5" />
+            <Skeleton height="150px" className="mb-5" />
+          </>
+        )}
+
+        {!loadingComments &&
+          userComments.length > 0 &&
+          userComments.map((commentObj) => (
+            <Comment key={commentObj.id} commentObj={commentObj} />
+          ))}
+
+        {!loadingComments && userComments.length === 0 && (
+          <>
+            <div className="font-bold text-xl">No comments yet...</div>
+            <div className="flex items-center justify-center font-medium text-lg">
+              Be the first one to comment <VscSmiley className="ml-1" />
             </div>
-          </div>
-          <Divider className="my-4" />
-          <div className="text-lg text-gray-600">This is the comment</div>
-        </div>
+          </>
+        )}
       </div>
     </>
   );
