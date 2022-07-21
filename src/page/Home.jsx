@@ -15,14 +15,18 @@ import {
   Button,
   Skeleton,
   Divider,
+  color,
 } from "@chakra-ui/react";
 // Lottie
 import { Player } from "@lottiefiles/react-lottie-player";
 // Icons
 import { BsSearch, BsEmojiSmileUpsideDown } from "react-icons/bs";
 import { MdClear } from "react-icons/md";
+import { ImArrowUp } from "react-icons/im";
 // Components
 import PostCard from "../component/PostCard";
+// Scroll to top
+import ScrollToTop from "react-scroll-to-top";
 
 const Home = () => {
   // States
@@ -147,7 +151,8 @@ const Home = () => {
                 Sorry, we couldn't find any results...
               </div>
               <div className="flex items-center justify-center  text-xl font-medium">
-                Try searching something else <BsEmojiSmileUpsideDown className="ml-1" />
+                Try searching something else{" "}
+                <BsEmojiSmileUpsideDown className="ml-1" />
               </div>
             </div>
           )}
@@ -193,6 +198,17 @@ const Home = () => {
         </div>
       </div>
 
+      <ScrollToTop
+        smooth
+        component={<ImArrowUp />}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          boxShadow:
+            "blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 8px -8px 0px -2px, rgb(31, 193, 27) 8px -8px, rgb(255, 255, 255) 16px -16px 0px -2px, rgb(255, 217, 19) 16px -16px, rgb(255, 255, 255) 24px -24px 0px -2px, rgb(255, 255, 255) 32px -32px 0px -2px",
+        }}
+      />
       {/* <div
         className="flex items-center fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-200 px-3 rounded-lg font-bold text-gray-600 hover:cursor-pointer hover:bg-gray-300 border-2 border-gray-300"
         onClick={() => {}}
