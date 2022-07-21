@@ -10,6 +10,7 @@ import Home from "./page/Home";
 import Post from "./page/Post";
 import Profile from "./page/Profile";
 import Settings from "./page/Settings";
+import NotFound from "./page/NotFound";
 // Components
 import Navbar from "./component/Navbar";
 // Import `ChakraProvider` component
@@ -39,6 +40,7 @@ function App() {
             <Route path="post/:postId" element={<Post />} />
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </div>

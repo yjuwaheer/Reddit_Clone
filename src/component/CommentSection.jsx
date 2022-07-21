@@ -134,18 +134,15 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
             saveComment();
           }}
           isDisabled={!isLoggedIn}
+          leftIcon={
+            isLoggedIn ? (
+              <BiCommentDetail />
+            ) : (
+              <AiFillLock />
+            )
+          }
         >
-          {isLoggedIn ? (
-            <>
-              <BiCommentDetail className="mr-2" />
-              Add Comment
-            </>
-          ) : (
-            <>
-              <AiFillLock className="mr-2" />
-              Log In to Comment
-            </>
-          )}
+          {isLoggedIn ? "Add Comment" : "Log In to Comment"}
         </Button>
       </div>
 
