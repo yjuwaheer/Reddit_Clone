@@ -3,14 +3,13 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, collection, getDocs } from "firebase/firestore";
 // Context
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Divider,
   useDisclosure,
-  useToast,
   SlideFade,
   Box,
   Button,
@@ -43,6 +42,14 @@ const ProfilePostCard = ({ post }) => {
   // Delete post
   const deletePost = async (postId) => {
     await deleteDoc(doc(db, "posts", postId));
+    const docsSnap = await getDocs(collection(db, postId));
+
+    // Delete any associated comments if present
+    if (docsSnap.docs.length > 0) {
+      docsSnap.forEach(async (comment) => {
+        await deleteDoc(doc(db, postId, comment.id));
+      });
+    }
   };
 
   return (
