@@ -79,8 +79,6 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
       return;
     }
 
-    console.log(user.uid);
-
     try {
       const docRef = await addDoc(collection(db, postId), {
         text: comment,
@@ -88,6 +86,7 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
         createdAt: serverTimestamp(),
       });
       incrementCommentCount();
+      setComment("");
     } catch (error) {
       console.log(error);
     }
