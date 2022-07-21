@@ -205,8 +205,9 @@ const Home = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          background: "rgba(255, 217, 19, 0.1)",
           boxShadow:
-            "blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 8px -8px 0px -2px, rgb(31, 193, 27) 8px -8px, rgb(255, 255, 255) 16px -16px 0px -2px, rgb(255, 217, 19) 16px -16px, rgb(255, 255, 255) 24px -24px 0px -2px, rgb(255, 255, 255) 32px -32px 0px -2px",
+            "rgb(255, 217, 19) 0px 0px 0px 3px, rgb(255, 156, 85) 0px 0px 0px 6px, rgb(255, 85, 85) 0px 0px 0px 9px",
         }}
       />
       {/* <div
