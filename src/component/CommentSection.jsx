@@ -18,10 +18,17 @@ import {
 import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
-import { Button, Skeleton, Textarea, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  Skeleton,
+  Textarea,
+  useToast,
+  Tooltip,
+} from "@chakra-ui/react";
 // Icons
 import { BiCommentDetail } from "react-icons/bi";
 import { VscSmiley } from "react-icons/vsc";
+import { AiFillLock } from "react-icons/ai";
 // Components
 import Comment from "./Comment";
 
@@ -32,7 +39,7 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
   const [userComments, setUserComments] = useState([]);
 
   // Other hooks
-  const { user } = useContext(AuthContext);
+  const { isLoggedIn, user } = useContext(AuthContext);
   const { postId } = useParams();
   const { accentColor } = useContext(SettingsContext);
   const toast = useToast();
@@ -119,15 +126,26 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         ></Textarea>
+
         <Button
           className="self-end mt-2"
           colorScheme={accentColor}
           onClick={() => {
             saveComment();
           }}
+          isDisabled={!isLoggedIn}
         >
-          <BiCommentDetail className="mr-2" />
-          Add Comment
+          {isLoggedIn ? (
+            <>
+              <BiCommentDetail className="mr-2" />
+              Add Comment
+            </>
+          ) : (
+            <>
+              <AiFillLock className="mr-2" />
+              Log In to Comment
+            </>
+          )}
         </Button>
       </div>
 
