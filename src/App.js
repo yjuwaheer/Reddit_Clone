@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./App.css";
 // Router
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // Context
 import { AuthContext } from "./context/Auth";
 import { SettingsContext } from "./context/Settings";
@@ -38,8 +38,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="post/:postId" element={<Post />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="settings" element={<Settings />} />
+            <Route
+              path="profile"
+              element={isLoggedIn ? <Profile /> : <Navigate to="/" replace />}
+            />
+            <Route
+              path="settings"
+              element={isLoggedIn ? <Settings /> : <Navigate to="/" replace />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
