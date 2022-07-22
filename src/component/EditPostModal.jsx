@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import "../style/component/AddPostModal.css";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
@@ -67,7 +67,7 @@ const EditPostModal = ({ isOpen, onClose, post }) => {
         duration: 3000,
         isClosable: true,
       });
-      onClose()
+      onClose();
       setLoading(false);
     } catch (error) {
       console.log(error);

@@ -3,7 +3,6 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import { db } from "../shared/FirebaseConfig";
 import { getDocs, collection, query, orderBy } from "firebase/firestore";
 // Context
-import { AuthContext } from "../context/Auth";
 import { FirestoreDBContext } from "../context/FirestoreDB";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
@@ -15,7 +14,6 @@ import {
   Button,
   Skeleton,
   Divider,
-  color,
 } from "@chakra-ui/react";
 // Lottie
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -36,7 +34,6 @@ const Home = () => {
   const [randomTags, setRandomTags] = useState([]);
 
   // Other hooks
-  const { user } = useContext(AuthContext);
   const { posts, setPosts } = useContext(FirestoreDBContext);
   const { accentColor } = useContext(SettingsContext);
   const searchInput = useRef();

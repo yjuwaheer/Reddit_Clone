@@ -18,13 +18,7 @@ import {
 import { AuthContext } from "../context/Auth";
 import { SettingsContext } from "../context/Settings";
 // Chakra UI
-import {
-  Button,
-  Skeleton,
-  Textarea,
-  useToast,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Button, Skeleton, Textarea, useToast } from "@chakra-ui/react";
 // Icons
 import { BiCommentDetail } from "react-icons/bi";
 import { BsEmojiSmile } from "react-icons/bs";
@@ -134,13 +128,7 @@ const CommentSection = ({ triggerReload, setTriggerReload }) => {
             saveComment();
           }}
           isDisabled={!isLoggedIn}
-          leftIcon={
-            isLoggedIn ? (
-              <BiCommentDetail />
-            ) : (
-              <AiFillLock />
-            )
-          }
+          leftIcon={isLoggedIn ? <BiCommentDetail /> : <AiFillLock />}
         >
           {isLoggedIn ? "Add Comment" : "Log In to Comment"}
         </Button>

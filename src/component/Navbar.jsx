@@ -37,7 +37,7 @@ const Navbar = () => {
   const [password, setPassword] = useState("");
 
   // Other hooks
-  const { isLoggedIn, setIsLoggedIn, user, setUser } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(AuthContext);
   const { accentColor } = useContext(SettingsContext);
   const signupModal = useDisclosure();
   const addPostModal = useDisclosure();
@@ -161,15 +161,17 @@ const Navbar = () => {
 
       {isLoggedIn && (
         <div>
-          {location.pathname === "/" && <Button
-            colorScheme={accentColor}
-            variant="solid"
-            className="mr-5"
-            onClick={addPostModal.onOpen}
-          >
-            <MdAddBox className="mr-1" />
-            Add Post
-          </Button>}
+          {location.pathname === "/" && (
+            <Button
+              colorScheme={accentColor}
+              variant="solid"
+              className="mr-5"
+              onClick={addPostModal.onOpen}
+            >
+              <MdAddBox className="mr-1" />
+              Add Post
+            </Button>
+          )}
 
           <Tooltip hasArrow label="Profile">
             <Button
