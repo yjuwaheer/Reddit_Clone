@@ -30,8 +30,11 @@ import {
 } from "@chakra-ui/react";
 // Icons
 import { BsUpload, BsEmojiWink } from "react-icons/bs";
+import { ImArrowUp } from "react-icons/im";
 // Components
 import ProfilePostCard from "../component/ProfilePostCard";
+// Scroll to top
+import ScrollToTop from "react-scroll-to-top";
 
 const Profile = () => {
   // States
@@ -311,6 +314,19 @@ const Profile = () => {
         accept="image/*"
         onChange={(e) => {
           updateProfileImage(e);
+        }}
+      />
+
+      <ScrollToTop
+        smooth
+        component={<ImArrowUp />}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "rgba(255, 217, 19, 0.4)",
+          boxShadow:
+            "rgb(255, 217, 19) 0px 0px 0px 3px, rgb(255, 156, 85) 0px 0px 0px 6px, rgb(255, 85, 85) 0px 0px 0px 9px",
         }}
       />
     </div>
