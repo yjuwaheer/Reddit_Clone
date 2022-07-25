@@ -18,6 +18,9 @@ Inspired by [GrammerHub Goatpad](https://github.com/grammerhub/goatpad).
 - Clone the repository.
 - Install dependencies using `npm install`.
 - Run `npm start`.
+- Open the browser and navigate to [localhost:3000](http://localhost:3000/)
+
+>`Note:` You can enter your own firebase configuration in ***FirebaseConfig.js***.
 
 # Structure (Overview)
 
@@ -42,4 +45,4 @@ Inspired by [GrammerHub Goatpad](https://github.com/grammerhub/goatpad).
       Profile-->EditPostModal;
 ```
 
->`Note:` ***Navbar*** in included in ***App*** to be made available to all pages (thus the bi-directional arrow).
+>`Note:` ***Navbar*** is included in ***App*** to be made available to all pages (thus the bi-directional arrow).
