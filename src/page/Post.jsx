@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 // Router
 import { useNavigate, useParams } from "react-router-dom";
 // Firebase
 import { db } from "../shared/FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+// Context
+import { SettingsContext } from "../context/Settings";
 // Chakra UI
 import {
   Button,
@@ -12,6 +14,7 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  Badge,
 } from "@chakra-ui/react";
 // Icons
 import { VscCommentDiscussion } from "react-icons/vsc";
@@ -31,6 +34,7 @@ const Post = () => {
   // Other hooks
   const navigate = useNavigate();
   const { postId } = useParams();
+  const { accentColor } = useContext(SettingsContext);
 
   useEffect(() => {
     getPost();
@@ -64,7 +68,7 @@ const Post = () => {
 
   return (
     <div className="flex flex-col items-center mb-10">
-      {loading && <Skeleton height="175px" className="w-9/12 mt-10" />}
+      {loading && <Skeleton height="225px" className="w-9/12 mt-10" />}
 
       {!loading && (
         <div className="flex drop-shadow-sm border-2 w-9/12 p-4 mt-10 rounded-md bg-slate-50 mb-5 relative">
@@ -88,8 +92,26 @@ const Post = () => {
             <div className="font-black text-3xl text-left">{post.title}</div>
             <Divider className="my-4" />
             <div className="text-lg text-left">{post.description}</div>
-            <Divider className="my-4" />
 
+            {/* Tags */}
+            <div className="flex mt-3">
+              <Badge variant="solid" className="mr-2">
+                Tags:
+              </Badge>
+              {post.tags.length > 0 &&
+                post.tags.map((tag) => (
+                  <Badge
+                    variant="solid"
+                    colorScheme={accentColor}
+                    className="px-1 mr-2"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              {post.tags.length === 0 && <Badge>None</Badge>}
+            </div>
+
+            <Divider className="my-4" />
             <div className="flex justify-between items-center">
               <div className="flex items-center">
                 {loadingAuthor ? (
