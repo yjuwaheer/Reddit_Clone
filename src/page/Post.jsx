@@ -104,6 +104,7 @@ const Post = () => {
                     variant="solid"
                     colorScheme={accentColor}
                     className="px-1 mr-2"
+                    key={tag}
                   >
                     {tag}
                   </Badge>
