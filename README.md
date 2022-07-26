@@ -5,7 +5,7 @@ Inspired by [GrammerHub Goatpad](https://github.com/grammerhub/goatpad).
 
 ## Languages, Frameworks and Tools
 
-- ReactJS
+- ReactJS (+ React Context API)
 - Firebase
   - Firebase Auth
   - Firebase Firestore
