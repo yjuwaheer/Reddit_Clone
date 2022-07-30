@@ -20,6 +20,7 @@ import {
 import { VscCommentDiscussion } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaVoteYea } from "react-icons/fa";
+import { AiFillTag } from "react-icons/ai";
 // Components
 import CommentSection from "../component/CommentSection";
 
@@ -96,7 +97,10 @@ const Post = () => {
             {/* Tags */}
             <div className="flex mt-3">
               <Badge variant="solid" className="mr-2">
-                Tags:
+                <div className="flex items-center">
+                  <AiFillTag className="mr-1" />
+                  Tags:
+                </div>
               </Badge>
               {post.tags.length > 0 &&
                 post.tags.map((tag) => (
