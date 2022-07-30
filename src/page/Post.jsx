@@ -99,7 +99,7 @@ const Post = () => {
               <Badge variant="solid" className="mr-2">
                 <div className="flex items-center">
                   <AiFillTag className="mr-1" />
-                  Tags:
+                  Tags
                 </div>
               </Badge>
               {post.tags.length > 0 &&
