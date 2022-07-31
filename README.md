@@ -12,6 +12,7 @@ Inspired by [GrammerHub Goatpad](https://github.com/grammerhub/goatpad).
   - Firebase Storage
 - TailwindCSS
 - ChakraUI
+- React Icons
 
 # Getting Started
 
